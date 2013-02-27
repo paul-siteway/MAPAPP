@@ -3,21 +3,42 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Yeah!</title>
+	<script src='http://maps.google.com/maps/api/js?sensor=true'></script>
+	<script src='js/gmaps.js'></script>
+	<link rel="stylesheet" href="css/main.css" media="all">
+
 </head>
 <body>
-	
-	<h1>Mein Orte</h1>
-	<form id="addOrt" action="">
-		<input type="text" name="" id="" placehodler="neuer Ort">
-		<input type="submit" value="neuer Ort">
-	</form>
-	<script type="text/template" id="ortTemplate">
-	<strong><%= title %></strong> ( Lat: <%= lat %> - Lon: <%= lon %>) <button>Delete</button>
-	</script>
+	<div id="mapAPP">
+		<div id="map" style="width:100%; height:100%;"></div>
+		<div id="controls">
+		<div class="navbar"><div class="navbar-inner">
+		<form id="addOrt" class="navbar-form pull-left">
+		  <input type="text" class="span2 title" placeholder="Title">
+		  <input type="text" class="span2 lat" placeholder="Latitude">
+		  <input type="text" class="span2 lon" placeholder="Longlitude">  
+		  <button type="submit" class="btn">Add New Location</button>
+		</form>
+		<div id="mapActions">
+			<a href="#" class="btn" id="showAll"><i class="icon-eye-open"></i>Show All Markers</a>
+			<a href="#" class="btn" id="removeAll"><i class="icon-eye-close"></i> Remove All Markers</a>
+		</div>
+		</div></div> <!-- navbar -->
+		
 
+		</div> <!-- controls -->
+		<div id="orteView">
+			<script type="text/template" id="ortTemplate">
+			<strong><%= title %></strong> ( Lat: <%= lat %> - Lon: <%= lon %>) <button>Delete</button>
+			</script>
+		</div>
+	</div><!-- mapAPP -->
 	<script  src="js/underscore.js"></script>
 	<script  src="js/jquery.js"></script>
 	<script  src="js/backbone.js"></script>
-	<script  src="js/main.js"></script>
+	<script  src="js/backbone-validation.js"></script>
+	<script  src="js/main.min.js"></script>
+	
+	
 </body>
 </html>	

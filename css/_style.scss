@@ -1,0 +1,39 @@
+@import 'bourbon/bourbon';
+#mapAPP {
+	#map{ 
+		width: 100% !important;
+		height: 1000px !important;
+		position: absolute;
+		z-index: 10;
+		//GOOGLE MAPS & BOOTSTAP FIX
+		img { 
+		  max-width: none;
+		}
+		label { 
+		  width: auto; display:inline; 
+		} 
+	}
+	#controls, #orteView{
+		position: fixed;
+		z-index: 20; 
+		background: #fff;
+		margin: 0 10%;
+		padding: 10px;
+		border: 1px solid grey;
+		#mapActions{
+			float: right;
+		}
+	}
+	#controls{
+		width: 80%;
+		top: 0;
+	}
+	#orteView{
+		bottom: 0;
+		left: 0;
+		height: auto;
+		width: 30%;
+	}
+	
+
+}
