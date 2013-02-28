@@ -67,7 +67,7 @@
 			lon: -0.119824,
 			html: 'ich bin der Default HTML Inhalt'
 		},
-
+		sync: function () { return false; },
 		validate: function(attrs){
 			if(	! _.isNumber(attrs.lat)	){
 				return 'lat Must not be empty';
@@ -212,7 +212,7 @@
 			var ort = new MapApp.Models.Ort();
 			ort.set({title: newTitle, lat: newLat, lon: newLon});
 			this.collection.add(ort);
-			console.log('newTitle is:'+newTitle+' isValid:'+$.trim(newTitle));
+			//console.log('newTitle is:'+newTitle+' isValid:'+$.trim(newTitle));
 		}
 	});
 
