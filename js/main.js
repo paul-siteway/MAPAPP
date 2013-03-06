@@ -1,5 +1,8 @@
 (function() {
 	
+
+	//create a namespace
+
 	window.MapApp = {
 		Models: {},
 		Collections: {},
@@ -9,15 +12,53 @@
 		return _.template($('#' + id).html());
 	};
     
-	// 
-	// GLOBAL EVENTS 
-	// 
+
+
+
+
+	// ########################################
+	// ########## CUSTOM FUNCTIONS ############
+	// ########################################
+	MapApp.addLocationToMap = function (id, lat, lon, title){
+		MapApp.map.addMarker({
+			lat			: lat,
+			lng			: lon,
+			title		: title,
+			html		: "",
+			click: function(e) {
+			//alert('You clicked in this marker '+title);
+			},
+			infoWindow: {
+				content: $('#orteView .ort').eq(id).html()
+			}
+		});
+		return 'marker added';
+	};
+
+	MapApp.removeMarkers = function () {
+		MapApp.map.removeMarkers();
+	};
+
+	//Initialize the Google Map
+	MapApp.map = new GMaps({
+        div: '#map',
+        lat: 53.571148,
+        lng: 10.024898,
+        zoom: 3
+      });
+
+
+
+
+	// ################################
+	// ######### GLOBAL EVENTS ########
+	// ################################
 	var vents = _.extend({}, Backbone.Events);
 
 
-	// 
-	// BB ROUTES
-	// 
+	// ################################
+	// ########## BB ROUTES ##########
+	// ################################
 
 	MapApp.Router = Backbone.Router.extend({
 		routes: {
@@ -56,16 +97,20 @@
 	Backbone.history.start();
 
 
-	// 
-	// ########  ORT M O D E L  ######## 
-	// 
+	// ################################
+	// ########  ORT M O D E L  #######
+	// ################################
 	MapApp.Models.Ort = Backbone.Model.extend({
 
 		defaults: {
 			title: 'Ich bin der Default Titel',
 			lat: 51.511214,
 			lon: -0.119824,
-			html: 'ich bin der Default HTML Inhalt'
+			logo: 'http://lorempixel.com/80/80/people/',
+			nationalCLC: 'NationalCLC here',
+			actionLines: 'Action Lines here',
+			eLLType: 'Type of E&LL facility',
+			link: 'http://www.google.de'
 		},
 		sync: function () { return false; },
 		validate: function(attrs){
@@ -86,20 +131,20 @@
 
 	});
 
-	// 
+	// ################################################################
 	// ######## ORTE C O L L E C T I O N ######## / A list or Orte
-	// 
+	// ################################ ################################
 
 	MapApp.Collections.Orte = Backbone.Collection.extend({
 		model: MapApp.Models.Ort
 	});
 
-	// 
-	// ORTE VIEW  - View for all Orte
-	// 
+	// ################################
+	// ########## ORTE VIEW  ########## - View for all Orte
+	// ################################
 
 	MapApp.Views.Orte = Backbone.View.extend({
-		tagName: 'ul' ,
+		tagName: 'div' ,
 		initialize: function() {
 			this.collection.on('add', this.addOne, this);
 		},
@@ -113,11 +158,15 @@
 		}
 	});
 
-	// 
+
+
+	// ################################
 	// ########  ORT V I E W   ######## 
-	// 
+	// ################################
+
+	 
 	MapApp.Views.Ort = Backbone.View.extend({
-		tagName : "li", 
+		tagName : "div", 
 		className: 'ort',
 		events: {
 			'click strong': 'showAlert',
@@ -148,9 +197,9 @@
 	});
 
 
-	// 
-	// ########  M A P ++ V I E W   ######## 
-	// 
+	// ########################################
+	// ##########  M A P ++ V I E W   ######### 
+	// ########################################
 	 
 
 	MapApp.Views.Map = Backbone.View.extend({
@@ -166,6 +215,7 @@
 			vents.on('change', this.showAll, this);
 			this.collection.on('add', this.showAll, this);
 			this.collection.on('remove', this.showAll, this);
+			this.showAll();
 			
 		},
 		showAll: function() {
@@ -180,8 +230,13 @@
 			var lat = ort.get('lat');
 			var lon = ort.get('lon');
 			var title = ort.get('title');
-			var html = ort.get('html');
-			MapApp.addLocationToMap(lat, lon, title, html);
+			var logo = ort.get('logo');
+			var id = ort.get('id');
+			var nationalCLC = ort.get('nationalCLC');
+			var actionLines = ort.get('actionLines');
+			var eLLType = ort.get('eLLType');
+			var link = ort.get('link');
+			MapApp.addLocationToMap(id, lat, lon, title);
 		},
 		destroyMarker: function (id) {
 			this.model.destroy();
@@ -191,9 +246,9 @@
 		}
 	});
 
-	// 
-	// ########  ADD ORT V I E W   ######## 
-	// 
+	// ########################################
+	// ##########  ADD ORT V I E W   ########## 
+	// ########################################
 	
 
 	MapApp.Views.AddOrt = Backbone.View.extend({
@@ -217,79 +272,78 @@
 	});
 
 
-	// 
-	// ########  NEW COLLECTION  ######## 
-	// 
+	// ########################################
+	// ###########  NEW COLLECTION  ########### 
+	// ########################################
 	
 
 	MapApp.orteCollection = new MapApp.Collections.Orte([
 		{	
 			id: 0,
-			title: "Hamburg", 
+			title: "Experience & Living Lab Hamburg", 
 			lat: 53.551085,
 			lon: 9.993682, 
-			html: "<strong>ich bin fett</strong> und jetzt nicht mehr"
+			html: "<strong>ich bin fett</strong> und jetzt nicht mehr",
+			logo: "http://lorempixel.com/g/80/80/nature/",
+			nationalCLC: 'Berlin',
+			actionLines: 'Computing in the Cloud, Smart Energy Systems',
+			eLLType: 'Office',
+			link: 'http://www.google.de'
+
 		},
 		{
 			id: 1,
-			title: "Berlin", 
+			title: "Experience & Living Lab Berlin", 
 			lat: 52.519171, 
 			lon: 13.406091,
-			html: "<small>ich bin small</small> und jetzt nicht mehr"
+			html: "<small>ich bin small</small> und jetzt nicht mehr",
+			logo: "http://lorempixel.com/g/80/80/sports/",
+			nationalCLC: 'Trento',
+			actionLines: 'Networking Solutions for Future Media',
+			eLLType: 'Office',
+			link: 'http://www.google.de'
+
 		},
 		{
 			id: 2,
-			title: "Stockholm", 
+			title: "Experience & Living Lab Stockholm", 
 			lat: 59.328930, 
 			lon: 18.064910,
-			html: "<h4>ich bin h4</h4> und jetzt nicht mehr"
+			html: "<h4>ich bin h4</h4> und jetzt nicht mehr",
+			logo: "http://lorempixel.com/g/80/80/cats/",
+			nationalCLC: 'Helsinki',
+			actionLines: 'Computing in the Cloud,Smart Spaces',
+			eLLType: 'Office',
+			link: 'http://www.google.de'
+
 		},
 		{
 			id: 3,
-			title: "Belin", 
+			title: "Experience & Living Lab Berlin", 
 			lat: 52.519171, 
 			lon: 13.406091,
-			html: "<small>ich bin small</small> und jetzt nicht mehr"
+			html: "<small>ich bin small</small> und jetzt nicht mehr",
+			logo: "http://lorempixel.com/g/80/80/abstract/",
+			nationalCLC: 'Eindhoven',
+			actionLines: 'Health & Wellbeing, Smart Energy Systems',
+			eLLType: 'Lab',
+			link: 'http://www.google.de'
 		},
 		{
-			id: 4,
+			id: 4
 		}
 	]);
 
+
+	//########################################
+	//########## CREATE VIEWS AND COLLECTIONS
+	//########################################
+
 	var orteView = new MapApp.Views.Orte({collection: MapApp.orteCollection});
-
 	$('#orteView').append(orteView.render().el);
-
 	var addOrtView = new MapApp.Views.AddOrt({collection: MapApp.orteCollection});
-
 	new MapApp.Views.Map({collection: MapApp.orteCollection});
 
-	///CUSTOM FUNCTIONS
-	MapApp.addLocationToMap = function (lat, lon, title, html) {
-		MapApp.map.addMarker({
-			lat: lat,
-			lng: lon,
-			title: title,
-			click: function(e) {
-			//alert('You clicked in this marker '+title);
-			},
-			infoWindow: {
-				content: title+': '+html
-			}
-		});
-		return 'marker added';
-	};
 
-	MapApp.removeMarkers = function () {
-		MapApp.map.removeMarkers();
-	};
-
-
-	MapApp.map = new GMaps({
-        div: '#map',
-        lat: 53.571148,
-        lng: 10.024898,
-        zoom: 3
-      });
 
 })();//siaf

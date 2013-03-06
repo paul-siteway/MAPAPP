@@ -5,40 +5,101 @@
 	<title>Yeah!</title>
 	<script src='http://maps.google.com/maps/api/js?sensor=true'></script>
 	<script src='js/gmaps.js'></script>
+
+
 	<link rel="stylesheet" href="css/main.css" media="all">
+
 
 </head>
 <body>
-	<div id="mapAPP">
-		<div id="map" style="width:100%; height:100%;"></div>
-		<div id="controls">
-		<div class="navbar"><div class="navbar-inner">
-		<form id="addOrt" class="navbar-form pull-left">
-		  <input type="text" class="span2 title" placeholder="Title">
-		  <input type="text" class="span2 lat" placeholder="Latitude">
-		  <input type="text" class="span2 lon" placeholder="Longlitude">  
-		  <button type="submit" class="btn">Add New Location</button>
-		</form>
-		<div id="mapActions">
-			<a href="#" class="btn" id="showAll"><i class="icon-eye-open"></i>Show All Markers</a>
-			<a href="#" class="btn" id="removeAll"><i class="icon-eye-close"></i> Remove All Markers</a>
-		</div>
-		</div></div> <!-- navbar -->
-		
 
-		</div> <!-- controls -->
-		<div id="orteView">
-			<script type="text/template" id="ortTemplate">
-			<strong><%= title %></strong> ( Lat: <%= lat %> - Lon: <%= lon %>) <button>Delete</button>
-			</script>
-		</div>
-	</div><!-- mapAPP -->
-	<script  src="js/underscore.js"></script>
-	<script  src="js/jquery.js"></script>
-	<script  src="js/backbone.js"></script>
-	<script  src="js/backbone-validation.js"></script>
-	<script  src="js/main.min.js"></script>
+					<div id="mapAPP">
+						
+
+
+						<div class="container">
+						<div id="controls">
+
+						<div class="navbar navbar-fixed-top"><div class="navbar-inner">
+							<div class="container">
+								<div class="row-fluid">
+									<div class="span1">
+										<label class="filterLabel" for="">Filter:</label>
+									</div>
+									<form id="filterLocations" class="navbar-form span11 form-inline">
+										<select id="subject" name="subject" class="span2">
+											<option value="na" selected="">National CLC</option>
+											<option value="service">General Customer Service</option>
+											<option value="suggestions">Suggestions</option>
+											<option value="product">Product Support</option>
+										</select>
+										<select id="subject" name="subject" class="span2">
+											<option value="na" selected="">Type of E&amp;LL facility</option>
+											<option value="service">General Customer Service</option>
+											<option value="suggestions">Suggestions</option>
+											<option value="product">Product Support</option>
+										</select>
+										<select id="subject" name="subject" class="span2">
+											<option value="na" selected="">Action Line</option>
+											<option value="service">General Customer Service</option>
+											<option value="suggestions">Suggestions</option>
+											<option value="product">Product Support</option>
+										</select>
+										<select id="subject" name="subject" class="span2">
+											<option value="na" selected="">Service</option>
+											<option value="service">General Customer Service</option>
+											<option value="suggestions">Suggestions</option>
+											<option value="product">Product Support</option>
+										</select>
+										<input type="text" class="search-query span4" placeholder="search">
+									</form>
+								
+								</div><!-- row -->
+							</div><!-- container -->
+						</div></div><!-- navbar -->
+						
+						</div> <!-- controls -->
+						<div id="map" style="width:100%; height:100%;"></div>
+						<div id="orteView">
+							<script type="text/template" id="ortTemplate">
+
+							<img src='<%= logo %>' alt='<%= title %>' title='<%= title %>' width='50px' height='50px'>
+							<h2><span><%= title %></span></h2>
+							<ul>
+								<li><strong>nationalCLC:</strong> <%= nationalCLC %></li>
+								<li><strong>actionLines:</strong> <%= actionLines %></li>
+								<li><strong>eLLType: </strong>	<%= eLLType %></li>
+								<li><strong>link:</strong> 		<%= link %></li>
+							</ul>
+							( Lat: <%= lat %> - Lon: <%= lon %>) 
+							<button>Delete</button>
+							
+							</script>
+						</div><!-- orteView -->
+
+						<div id="mapActions">
+							<form id="addOrt" class="form-inline">
+								<input type="text" class="span2 title" placeholder="Title">
+								<input type="text" class="span2 lat" placeholder="Latitude">
+								<input type="text" class="span2 lon" placeholder="Longlitude">  
+								<button type="submit" class="btn">Add Location</button>
+								<a href="#" class="btn" id="showAll"><i class="icon-eye-open"></i>Show All Markers</a>			
+								<a href="#" class="btn" id="removeAll"><i class="icon-eye-close"></i> Remove All Markers</a></div>
+							</form>
+						</div><!-- mapActions -->
+
+						</div><!-- Container -->
+						</div> <!-- mapAPP -->
+
+
+
+						<script  src="js/underscore.js"></script>
+						<script  src="js/jquery.js"></script>
+						<script  src="js/backbone.js"></script>
+						<script  src="js/backbone-validation.js"></script>
+						<script  src="js/main.min.js"></script>
+
 	
 	
 </body>
-</html>	
+</html>		

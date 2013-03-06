@@ -7290,30 +7290,38 @@ ul.icons {
 .icon-folder-open-alt {
   *zoom: expression(this.runtimeStyle['zoom'] = '1',this.innerHTML = '&#xf115;'); }
 
-#mapAPP #map {
-  width: 100% !important;
-  height: 1000px !important;
-  position: absolute;
-  z-index: 10; }
-  #mapAPP #map img {
-    max-width: none; }
-  #mapAPP #map label {
-    width: auto;
-    display: inline; }
-#mapAPP #controls, #mapAPP #orteView {
-  position: fixed;
-  z-index: 20;
-  background: #fff;
-  margin: 0 10%;
-  padding: 10px;
-  border: 1px solid grey; }
-  #mapAPP #controls #mapActions, #mapAPP #orteView #mapActions {
-    float: right; }
-#mapAPP #controls {
-  width: 80%;
-  top: 0; }
-#mapAPP #orteView {
-  bottom: 0;
-  left: 0;
-  height: auto;
-  width: 30%; }
+#mapAPP {
+  position: relative;
+  background: url("http://www.eitictlabs.eu/fileadmin/system2013/g/img/bg_body.jpg") repeat top left; }
+  #mapAPP #map {
+    width: 100% !important;
+    height: 500px !important;
+    -webkit-box-shadow: 0 0 5px #eaeaea;
+    box-shadow: 0 0 5px #eaeaea;
+    border: 1px solid white; }
+    #mapAPP #map img {
+      max-width: none; }
+    #mapAPP #map label {
+      width: auto;
+      display: inline; }
+  #mapAPP #controls select {
+    font-size: 10px; }
+  #mapAPP #controls .filterLabel {
+    padding: 10px;
+    padding-bottom: 0;
+    text-align: right; }
+  #mapAPP #controls .navbar-inner {
+    box-shadow: 0 0 10px #39597d; }
+  #mapAPP #orteView {
+    background: #fff; }
+    #mapAPP #orteView .ort {
+      -webkit-box-shadow: 0 0 5px #eaeaea;
+      box-shadow: 0 0 5px #eaeaea;
+      border: 1px solid #f1f1f1;
+      margin: 10px 0;
+      padding: 10px; }
+      #mapAPP #orteView .ort img {
+        float: left;
+        margin-right: 10px; }
+      #mapAPP #orteView .ort ul {
+        list-style: none; }
