@@ -136,6 +136,20 @@
 	// ################################ ################################
 
 	MapApp.Collections.Orte = Backbone.Collection.extend({
+	
+		filterType : function(ellType){
+			return _(this.filter(function(data){
+				return data.get('eLLType') == ellType;
+			}))
+		},
+		searchTitle : function(letters){
+			if(letters == "") return this;
+
+			var pattern = new RegExp(letters, 'gi');
+			return _(this.filter(function(data){
+				return pattern.test(data.get('title'))
+			}))
+		},
 		model: MapApp.Models.Ort
 	});
 
@@ -145,6 +159,10 @@
 
 	MapApp.Views.Orte = Backbone.View.extend({
 		tagName: 'div' ,
+		events: {
+			'keyup #searchTitle' : 'search',
+			'change #filterType' : 'filterType',
+		},
 		initialize: function() {
 			this.collection.on('add', this.addOne, this);
 		},
@@ -155,6 +173,15 @@
 		addOne: function (ort) {
 			var ortView = new MapApp.Views.Ort({model: ort});
 			this.$el.append(ortView.render().el);
+		},
+		search : function (e) {
+			var letters = $('#searchTitle').val();
+			this.render(this.collection.searchTitle(letters));
+		},
+		filterType: function(e){
+			var type = $('#llType').find('option:selected').val();
+			if(type == '') status = 0;
+			this.render(this.collection.filterType(type));
 		}
 	});
 
