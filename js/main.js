@@ -169,6 +169,7 @@
 		tagName : "div", 
 		className: 'ort',
 		events: {
+			'click' : 'showOrtInMap',
 			'click strong': 'showAlert',
 			'click button': 'destroy'
 		},
@@ -193,6 +194,13 @@
 		},
 		remove: function () {
 			this.$el.remove();
+		},
+		showOrtInMap: function () {
+			console.log(this.model.get('id'));
+			var lat = this.model.get('lat');
+			var lon = this.model.get('lon');
+			MapApp.map.setCenter(lat, lon);
+			MapApp.map.setZoom(6);
 		}
 	});
 
