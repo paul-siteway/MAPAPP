@@ -1,3 +1,4 @@
+
 (function() {
 	
 
@@ -21,8 +22,8 @@
 	MapApp.vents = _.extend({}, Backbone.Events);
 	
 	$('select#ellType').change(function(){
-		MapApp.vents.trigger('startFilter');	
-	})
+		MapApp.vents.trigger('filterbyType');	
+	});
 	
 
 
@@ -40,7 +41,7 @@
 			//alert('You clicked in this marker '+title);
 			},
 			infoWindow: {
-				content: $('#orteView .ort').eq(id).html()
+				content: $('#orteView #ort'+id).html()
 			}
 		});
 		return 'marker added';
@@ -141,25 +142,7 @@
 	// ######## ORTE C O L L E C T I O N ######## / A list or Orte
 	// ################################ ################################
 
-	MapApp.Collections.Orte = Backbone.Collection.extend({
-	
-		filterType : function(ellType){
-			return this.filter(function(ort){
-				var result = ort.get('eLLType') == ellType;
-				console.log(result);
-				return result;
-			})
-		},
-		searchTitle : function(letters){
-			if(letters == "") return this;
-
-			var pattern = new RegExp(letters, 'gi');
-			return _(this.filter(function(data){
-				var result = pattern.test(data.get('title')); 
-				console.log(result)
-				return result;
-			}))
-		},
+	MapApp.Collections.Orte = Backbone.QueryCollection.extend({
 		model: MapApp.Models.Ort
 	});
 
@@ -169,35 +152,39 @@
 
 	MapApp.Views.Orte = Backbone.View.extend({
 		tagName: 'div' ,
-		events: {
-			'keyup #searchTitle' : 'search',
-			'change #filterType' : 'filterType',
-		},
 		initialize: function() {
 			this.collection.on('add', this.addOne, this);
-			MapApp.vents.on('startFilter', this.filterType, this);
+			this.collection.on('reset', this.render, this);
+			MapApp.vents.on('filterbyType', this.startFilterType, this);
 			MapApp.vents.on('startSearch', this.search, this);
 		},
 		render: function(){
+			console.log('redering')
 			this.$el.html('');
 			this.collection.each(this.addOne, this);
 			return this;
+		},
+		renderFiltered : function(orte){
+
+		$("#orteView").html("");
+		orte.each(function(ort){
+			var view = new MapApp.Views.Ort({
+				model: ort,
+				collection: this.collection
+			});
+			$("#orteView").append(view.render().el);
+		});
+		return this;
 		},
 		addOne: function (ort) {
 			var ortView = new MapApp.Views.Ort({model: ort});
 			this.$el.append(ortView.render().el);
 		},
-		search : function (e) {
-			console.log('starting Search');
-			var letters = $('#searchTitle').val();
-			this.renderList(this.collection.searchTitle(letters));
-		},
-		filterType: function(e){
-			console.log('starting Filter');
+		startFilterType: function(){
+			
 			var type = $('#ellType').find('option:selected').val();
-			this.collection.reset(this.collection.filterType(type));
-			this.render();
-
+			console.log('startFilterType:' +type);
+			this.collection.reset(this.collection.query({ eLLType: {$like: type}}) )
 		}
 	});
 
@@ -224,7 +211,8 @@
 			
 		},
 		render: function(){
-			this.$el.html(	this.template(this.model.toJSON())	);
+			var id = this.model.get('id');
+			this.$el.html( 	this.template(this.model.toJSON()) ).attr('id', 'ort'+id);
 			MapApp.vents.trigger('change');
 			return this;
 		}, 
@@ -333,7 +321,7 @@
 	//########## CREATE VIEWS AND COLLECTIONS
 	//########################################
 
-	MapApp.masterCollection = new MapApp.Collections.Orte([
+	MapApp.orteCollection = new MapApp.Collections.Orte([
 		{	
 			id: 0,
 			title: "Experience & Living Lab Hamburg", 
@@ -390,7 +378,6 @@
 		}
 	]);
 
-	MapApp.orteCollection = new MapApp.Collections.Orte(MapApp.masterCollection.toJSON()); 
 
 
 	MapApp.orteView = new MapApp.Views.Orte({collection: MapApp.orteCollection});
