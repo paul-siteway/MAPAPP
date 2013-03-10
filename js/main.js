@@ -15,6 +15,17 @@
 
 
 
+	// ################################
+	// ######### GLOBAL EVENTS ########
+	// ################################
+	MapApp.vents = _.extend({}, Backbone.Events);
+	
+	$('select#ellType').change(function(){
+		MapApp.vents.trigger('startFilter');	
+	})
+	
+
+
 
 	// ########################################
 	// ########## CUSTOM FUNCTIONS ############
@@ -50,11 +61,6 @@
 
 
 
-	// ################################
-	// ######### GLOBAL EVENTS ########
-	// ################################
-	var vents = _.extend({}, Backbone.Events);
-
 
 	// ################################
 	// ########## BB ROUTES ##########
@@ -74,10 +80,10 @@
 		},
 		show: function (id) {
 			console.log('show:'+id) ;
-			vents.trigger('ort:show', id);
+			MapApp.vents.trigger('ort:show', id);
 		},
 		showAll: function (id) {
-			vents.trigger('ort:showAll', id);
+			MapApp.vents.trigger('ort:showAll', id);
 		},
 		add: function (id,title) {
 			console.log('add id:'+id+' title:'+title) ;
@@ -138,16 +144,20 @@
 	MapApp.Collections.Orte = Backbone.Collection.extend({
 	
 		filterType : function(ellType){
-			return _(this.filter(function(data){
-				return data.get('eLLType') == ellType;
-			}))
+			return this.filter(function(ort){
+				var result = ort.get('eLLType') == ellType;
+				console.log(result);
+				return result;
+			})
 		},
 		searchTitle : function(letters){
 			if(letters == "") return this;
 
 			var pattern = new RegExp(letters, 'gi');
 			return _(this.filter(function(data){
-				return pattern.test(data.get('title'))
+				var result = pattern.test(data.get('title')); 
+				console.log(result)
+				return result;
 			}))
 		},
 		model: MapApp.Models.Ort
@@ -165,8 +175,11 @@
 		},
 		initialize: function() {
 			this.collection.on('add', this.addOne, this);
+			MapApp.vents.on('startFilter', this.filterType, this);
+			MapApp.vents.on('startSearch', this.search, this);
 		},
 		render: function(){
+			this.$el.html('');
 			this.collection.each(this.addOne, this);
 			return this;
 		},
@@ -175,13 +188,16 @@
 			this.$el.append(ortView.render().el);
 		},
 		search : function (e) {
+			console.log('starting Search');
 			var letters = $('#searchTitle').val();
-			this.render(this.collection.searchTitle(letters));
+			this.renderList(this.collection.searchTitle(letters));
 		},
 		filterType: function(e){
-			var type = $('#llType').find('option:selected').val();
-			if(type == '') status = 0;
-			this.render(this.collection.filterType(type));
+			console.log('starting Filter');
+			var type = $('#ellType').find('option:selected').val();
+			this.collection.reset(this.collection.filterType(type));
+			this.render();
+
 		}
 	});
 
@@ -204,11 +220,12 @@
 		initialize: function(){
 			this.model.on('change', this.render, this );
 			this.model.on('destroy', this.remove, this );
+
 			
 		},
 		render: function(){
 			this.$el.html(	this.template(this.model.toJSON())	);
-			vents.trigger('change');
+			MapApp.vents.trigger('change');
 			return this;
 		}, 
 		showAlert: function () {
@@ -246,8 +263,8 @@
 		},
 		initialize: function(){
 			// vents.on('ort:show', this.showOrt, this);
-			vents.on('ort:showAll', this.showAll, this);
-			vents.on('change', this.showAll, this);
+			MapApp.vents.on('ort:showAll', this.showAll, this);
+			MapApp.vents.on('change', this.showAll, this);
 			this.collection.on('add', this.showAll, this);
 			this.collection.on('remove', this.showAll, this);
 			this.showAll();
@@ -312,7 +329,11 @@
 	// ########################################
 	
 
-	MapApp.orteCollection = new MapApp.Collections.Orte([
+	//########################################
+	//########## CREATE VIEWS AND COLLECTIONS
+	//########################################
+
+	MapApp.masterCollection = new MapApp.Collections.Orte([
 		{	
 			id: 0,
 			title: "Experience & Living Lab Hamburg", 
@@ -348,7 +369,7 @@
 			logo: "http://lorempixel.com/g/80/80/cats/",
 			nationalCLC: 'Helsinki',
 			actionLines: 'Computing in the Cloud,Smart Spaces',
-			eLLType: 'Office',
+			eLLType: 'University',
 			link: 'http://www.google.de'
 
 		},
@@ -369,14 +390,12 @@
 		}
 	]);
 
+	MapApp.orteCollection = new MapApp.Collections.Orte(MapApp.masterCollection.toJSON()); 
 
-	//########################################
-	//########## CREATE VIEWS AND COLLECTIONS
-	//########################################
 
-	var orteView = new MapApp.Views.Orte({collection: MapApp.orteCollection});
-	$('#orteView').append(orteView.render().el);
-	var addOrtView = new MapApp.Views.AddOrt({collection: MapApp.orteCollection});
+	MapApp.orteView = new MapApp.Views.Orte({collection: MapApp.orteCollection});
+	$('#orteView').append(MapApp.orteView.render().el);
+	MapApp.addOrtView = new MapApp.Views.AddOrt({collection: MapApp.orteCollection});
 	new MapApp.Views.Map({collection: MapApp.orteCollection});
 
 
