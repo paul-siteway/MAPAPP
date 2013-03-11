@@ -2,17 +2,17 @@ MAPAPP
 ======
 
 
-A single page Application for displaying and filtering Locations  on a google map.
+A single page application for displaying and filtering locations  on a google map.
 
-This project is using: 
+# This project is using: 
 
-Frontend Toolkit:
-- [twitter boostrap] (http://twitter.github.com/bootstrap/)
+frontend toolkit:
+- [witter boostrap] (http://twitter.github.com/bootstrap/)
 
-JS MVC Framework:
+javascript mvc framework:
 - [backbone.js] (http://backbonejs.org/)
 - [backbone query] (https://github.com/davidgtonge/backbone_query)
 
-Mapping:
+mapping:
 - [gmaps.js] (http://hpneo.github.com/gmaps/) 
 - [google maps api] (https://developers.google.com/maps/?hl=de)
