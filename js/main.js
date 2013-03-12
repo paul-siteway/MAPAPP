@@ -1,4 +1,4 @@
-(function() {
+	(function() {
 	
 	//create a namespace
 
@@ -86,7 +86,7 @@
 			'*other': 'Default'
 		},
 		index: function () {
-			console.log('index');
+			//console.log('index');
 		},
 		show: function (id) {
 			console.log('show:'+id) ;
@@ -265,15 +265,26 @@
 			this.$el.html( this.template( {optionName: optionName} ));	
 		},
 		renderallOptions: function () {
-			// console.log('Rendering Options');
-			var optionList = MapApp.optionenCollection.at(this.options.index).get('filteroptions');
-			optionList = _.uniq(optionList);
-			_.each(optionList, function (name) {
-				if(_.isArray(name) || _.isUndefined(name) || _.isNull(name)) return;
-				console.log(name);
+			 // console.log('Rendering Options');
+			var arrayHolder = MapApp.optionenCollection.at(this.options.index).get('filteroptions');
+			
+			//create an Array for all Filtersoptions
+			MapApp["filterOptionsArray"+this.options.index] = [];
+
+			// Go through all filters
+			_.each(arrayHolder, function (option,index) {
+				_.each(option, function (inhalt,index){
+					//console.log('der Inhalt des '+index+' items ist: '+inhalt);
+					//add each array content to the corresponding filter Array
+					MapApp["filterOptionsArray"+this.options.index].push(inhalt)
+				},this);
+			},this);
+			//make the FilterArray Unique
+			MapApp["filterOptionsArray"+this.options.index] = _.uniq(MapApp["filterOptionsArray"+this.options.index]);
+			//Finally go trough all the items in the Filtersoptions array and add them to the Select
+			_.each(MapApp["filterOptionsArray"+this.options.index], function (name) {
 				this.$el.append( this.template( {optionName: name} ));	
 			},this);
-			//MapApp.optionenCollection.at(this.options.index).get('filtername');
 		},
 		selectChanged :  function () {
 			alert('hihi');
@@ -459,10 +470,10 @@
 			lon: 13.406091, 
 			logo: "http://lorempixel.com/g/80/80/nature/",
 			filterable: {
-				nationalCLC: 'Berlin',
-				actionLines: ['Computing in the Cloud, Smart Energy Systems'],
+				nationalCLC: ['Berlin'],
+				actionLines: ['Computing in the Cloud', 'Smart Energy Systems'],
 				services: ['Service1','Service2','Service3','Service4'],
-				eLLType: 'Office'
+				eLLType: ['Office']
 			},
 			link: 'http://www.google.de'
 
@@ -474,10 +485,10 @@
 			lon: 11.12108,
 			logo: "http://lorempixel.com/g/80/80/sports/",
 			filterable: {
-				nationalCLC: 'Trento',
+				nationalCLC: ['Trento'],
 				actionLines: ['Networking Solutions for Future Media'],
 				services: ['Service1','Service2','Service3','Service4'],
-				eLLType: 'Office'
+				eLLType: ['Office','Kein Office','Irgendwas anderes']
 			},
 			link: 'http://www.google.de'
 
@@ -489,10 +500,10 @@
 			lon: 24.938551,
 			logo: "http://lorempixel.com/g/80/80/cats/",
 			filterable: {
-				nationalCLC: 'Helsinki',
+				nationalCLC: ['Helsinki'],
 				actionLines: ['Computing in the Cloud','Smart Spaces'],
 				services: ['Service1','Service2','Service3','Service4'],
-				eLLType: 'University'
+				eLLType: ['University']
 			},
 			link: 'http://www.google.de'
 
@@ -504,15 +515,30 @@
 			lon: 5.469723,
 			logo: "http://lorempixel.com/g/80/80/abstract/",
 			filterable: {
-				nationalCLC: 'Eindhoven',
+				nationalCLC: ['Eindhoven'],
 				actionLines: ['Health & Wellbeing', 'Smart Energy Systems'],
 				services: ['Service1','Service2','Service3','Service4'],
-				eLLType: 'Lab'
+				eLLType: ['Lab']
 			},
 			link: 'http://www.google.de'
 		},
-		{
+		{	
 			id: 4,
+			title: "New Lab Berlin",
+			lat: 53.519171,
+			lon: 14.406091, 
+			logo: "http://lorempixel.com/g/80/80/nature/",
+			filterable: {
+				nationalCLC: ['Berlin'],
+				actionLines: ['Computing in the Cloud', 'Smart Energy Systems','Health & Wellbeing'],
+				services: ['Service1','Service2','Service3','All Services'],
+				eLLType: ['Office', 'Lab', 'Other']
+			},
+			link: 'http://www.google.de'
+
+		},
+		{
+			id: 5,
 			filterable: {}
 		}
 	]);
