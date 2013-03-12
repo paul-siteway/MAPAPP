@@ -9,14 +9,9 @@
 
 	<link rel="stylesheet" href="css/main.css" media="all">
 
-^
 </head>
 <body>
-
 					<div id="mapAPP">
-						
-
-
 						<div class="container">
 						<div id="controls">
 
@@ -27,7 +22,7 @@
 										<label class="filterLabel" for="">Filter:</label>
 									</div>
 									<form id="filterLocations" class="navbar-form span11 form-inline">
-										<select id="subject" name="subject" class="span2">
+<!-- 										<select id="subject" name="subject" class="span2">
 											<option value="na" selected="">National CLC</option>
 											<option value="service">General Customer Service</option>
 											<option value="suggestions">Suggestions</option>
@@ -50,7 +45,10 @@
 											<option value="service">General Customer Service</option>
 											<option value="suggestions">Suggestions</option>
 											<option value="product">Product Support</option>
-										</select>
+										</select> -->
+										<script type="text/template" id="filterTemplate">
+											<option value=' <%= optionName %>'> <%= optionName %> </option>
+										</script>
 										<input type="text" id="searchTitle" class="search-query span4" placeholder="search">
 									</form>
 								
@@ -60,23 +58,33 @@
 						
 						</div> <!-- controls -->
 						<div id="map" style="width:100%; height:100%;"></div>
+
 						<div id="orteView">
 							<script type="text/template" id="ortTemplate">
-
 							<img src='<%= logo %>' alt='<%= title %>' title='<%= title %>' width='50px' height='50px'>
 							<h2><span><%= title %></span></h2>
 							<ul>
-								<li><strong>nationalCLC:</strong> <%= nationalCLC %></li>
-								<li><strong>actionLines:</strong> <%= actionLines %></li>
-								<li><strong>eLLType: </strong>	<%= eLLType %></li>
-								<li><strong>link:</strong> 		<%= link %></li>
+								<% if (filterable.nationalCLC) { %>
+									<li><strong>nationalCLC:</strong> <%= filterable.nationalCLC %></li>
+								<% } %>
+								<% if (filterable.actionLines) { %>
+								<li><strong>actionLines:</strong> <%= filterable.actionLines %></li>
+								<% } %>
+								<% if (filterable.eLLType) { %>
+								<li><strong>eLLType: </strong>	<%= filterable.eLLType %></li>
+								<% } %>
+								<% if (filterable.services) { %>
+								<li><strong>services: </strong>	<%= filterable.services %></li>
+								<% } %>
+								<% if (link) { %>
+								<li><strong>link:</strong><%= link %></li>
+								<% } %>
 							</ul>
 							( Lat: <%= lat %> - Lon: <%= lon %>) 
 							<button>Delete</button>
 							
 							</script>
 						</div><!-- orteView -->
-
 						<div id="mapActions">
 							<form id="addOrt" class="form-inline">
 								<input type="text" class="span2 title" placeholder="Title">
