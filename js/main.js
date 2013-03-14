@@ -69,6 +69,37 @@
 		return obj[prop];
 	};
 
+	MapApp.activateMultiselect = function () {
+		$('.multiselect').multiselect({
+			buttonClass: 'btn',
+			buttonWidth: 'auto',
+			maxHeight: false,
+			buttonText: function(options) {
+				if (options.length == 0) {
+					return 'None selected <b class="caret"></b>';
+				}
+				else if (options.length > 1) {
+					return options.length + ' selected  <b class="caret"></b>';
+				}
+				else {
+					var selected = '';
+					options.each(function() {
+						selected += $(this).text() + ', ';
+					});
+					return selected.substr(0, selected.length -2) + ' <b class="caret"></b>';
+				}
+				//buttontext
+			}
+			,
+			onChange: function(element, checked) {
+				console.log('change')
+				MapApp.vents.trigger('selectChanged', element, checked);
+			}
+
+		});
+	}//activateMultiselect
+	
+
 
 
 
@@ -247,13 +278,11 @@
 
 	MapApp.Views.Filter = Backbone.View.extend({
 		tagName: 'select',
-		className: 'span2',
+		className: 'span2 multiselect',
 		template: template('filterTemplate'),
-		events: {
-			'change' : 'selectChanged'
-		},
 		initialize: function () {
 			// console.log('initialized Single Filter View');
+			this.$el.attr( "data-name", MapApp.filterList[this.options.index] );
 		},
 		render: function () {
 			this.renderFilters();
@@ -262,7 +291,7 @@
 		renderFilters: function () {
 			var optionName = MapApp.filterList[this.options.index];
 			//this.$el.html('<option value="'+optionName+'">'+optionName+'</option>' );
-			this.$el.html( this.template( {optionName: optionName} ));	
+			//this.$el.html( this.template( {optionName: optionName} ));	
 		},
 		renderallOptions: function () {
 			 // console.log('Rendering Options');
@@ -285,11 +314,7 @@
 			_.each(MapApp["filterOptionsArray"+this.options.index], function (name) {
 				this.$el.append( this.template( {optionName: name} ));	
 			},this);
-		},
-		selectChanged :  function () {
-			alert('hihi');
 		}
-
 	});
 
 
@@ -301,9 +326,11 @@
 		tagName: 'div', 
 		className: 'filters',
 		initialize: function () {
+			MapApp.vents.on('selectChanged', this.selectChanged, this);
 			this.createFilterList();
 			this.createOptionsLists();
 			this.render();
+			// MapApp.activateMultiselect();
 		},
 		createFilterList: function () {
 			// console.log('creatingFilterList');
@@ -318,7 +345,7 @@
 					MapApp.filterList.push(key);
 				}
 			});
-			//Remove all dublicates
+			//Remove all duplicates
 			MapApp.filterList = _.uniq(MapApp.filterList);			
 		},
 		createOptionsLists: function () {
@@ -350,7 +377,9 @@
 				this.$el.append(  MapApp.filterView.el );
 			},this);
 			return this;
-		}	
+		},selectChanged :  function (element, checked) {
+			console.log('the element is: '+element.text()+' the opion is'+checked)
+		}
 	});
 
 	// ########################################
@@ -547,6 +576,7 @@
 	
 
 	MapApp.filterView = new MapApp.Views.Filter({model:MapApp.Models.Ort});
+
 	
 	MapApp.filtersView = new MapApp.Views.Filters({collection: MapApp.orteCollection});
 	$('#filterLocations').append( MapApp.filtersView.el);
@@ -560,6 +590,6 @@
 	MapApp.addOrtView = new MapApp.Views.AddOrt({collection: MapApp.orteCollection});
 	new MapApp.Views.Map({collection: MapApp.orteCollection});
 
-
+	MapApp.activateMultiselect();
 
 })();//siaf
