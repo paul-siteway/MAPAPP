@@ -76,7 +76,7 @@
 			maxHeight: false,
 			buttonText: function(options) {
 				if (options.length == 0) {
-					return 'None selected <b class="caret"></b>';
+					return element.parent().attr('data-name');
 				}
 				else if (options.length > 1) {
 					return options.length + ' selected  <b class="caret"></b>';
@@ -93,7 +93,8 @@
 			,
 			onChange: function(element, checked) {
 				console.log('change')
-				MapApp.vents.trigger('selectChanged', element, checked);
+				filtername = element.parent().attr('data-name');
+				MapApp.vents.trigger('selectChanged', element,filtername,checked);
 			}
 
 		});
@@ -350,6 +351,8 @@
 		},
 		createOptionsLists: function () {
 			MapApp.optionsLists = {};
+			// reset the optionen Collection 
+			MapApp.optionenCollection.reset();
 			//Go trough each Filter in the Filterlist
 			_.each(MapApp.filterList,function (filtername, index){
 					//Add a empty Model to ne optionen Collection
@@ -364,12 +367,14 @@
 						var option = ort.get('filterable')[filtername];
 						tempArray.push(option);
 				});
+					console.log('####'+tempArray)
 				MapApp.optionenCollection.at(index).set('filteroptions', tempArray);
 			});
 
 		},
 		render: function () {
 			////Filter trough all ITEMS
+			this.$el.html('')
 			_.each(MapApp.filterList, function (filter,index) {
 				//for each vreate a new View.
 				MapApp.filterView = new MapApp.Views.Filter({index:index}); 
@@ -377,8 +382,8 @@
 				this.$el.append(  MapApp.filterView.el );
 			},this);
 			return this;
-		},selectChanged :  function (element, checked) {
-			console.log('the element is: '+element.text()+' the opion is'+checked)
+		},selectChanged :  function (element, filtername, checked) {
+			console.log('the element is: '+element.text()+' the opion is'+checked+' the filtername is:'+filtername)
 		}
 	});
 
@@ -499,10 +504,10 @@
 			lon: 13.406091, 
 			logo: "http://lorempixel.com/g/80/80/nature/",
 			filterable: {
-				nationalCLC: ['Berlin'],
-				actionLines: ['Computing in the Cloud', 'Smart Energy Systems'],
-				services: ['Service1','Service2','Service3','Service4'],
-				eLLType: ['Office']
+				City: ['Berlin'],
+				InnovationArea: ['Computing in the Cloud', 'Smart Energy Systems'],
+				Services: ['Service1','Service2','Service3','Service4'],
+				LocationType: ['Office']
 			},
 			link: 'http://www.google.de'
 
@@ -514,10 +519,10 @@
 			lon: 11.12108,
 			logo: "http://lorempixel.com/g/80/80/sports/",
 			filterable: {
-				nationalCLC: ['Trento'],
-				actionLines: ['Networking Solutions for Future Media'],
-				services: ['Service1','Service2','Service3','Service4'],
-				eLLType: ['Office','Kein Office','Irgendwas anderes']
+				City: ['Trento'],
+				InnovationArea: ['Networking Solutions for Future Media'],
+				Services: ['Service1','Service2','Service3','Service4'],
+				LocationType: ['Office','Hackspace']
 			},
 			link: 'http://www.google.de'
 
@@ -529,10 +534,10 @@
 			lon: 24.938551,
 			logo: "http://lorempixel.com/g/80/80/cats/",
 			filterable: {
-				nationalCLC: ['Helsinki'],
-				actionLines: ['Computing in the Cloud','Smart Spaces'],
-				services: ['Service1','Service2','Service3','Service4'],
-				eLLType: ['University']
+				City: ['Helsinki'],
+				InnovationArea: ['Computing in the Cloud','Smart Spaces'],
+				Services: ['Service1','Service2','Service3','Service4'],
+				LocationType: ['University']
 			},
 			link: 'http://www.google.de'
 
@@ -544,10 +549,10 @@
 			lon: 5.469723,
 			logo: "http://lorempixel.com/g/80/80/abstract/",
 			filterable: {
-				nationalCLC: ['Eindhoven'],
-				actionLines: ['Health & Wellbeing', 'Smart Energy Systems'],
-				services: ['Service1','Service2','Service3','Service4'],
-				eLLType: ['Lab']
+				City: ['Eindhoven'],
+				InnovationArea: ['Health & Wellbeing', 'Smart Energy Systems'],
+				Services: ['Service1','Service2','Service3','Service4'],
+				LocationType: ['Lab']
 			},
 			link: 'http://www.google.de'
 		},
@@ -558,10 +563,10 @@
 			lon: 14.406091, 
 			logo: "http://lorempixel.com/g/80/80/nature/",
 			filterable: {
-				nationalCLC: ['Berlin'],
-				actionLines: ['Computing in the Cloud', 'Smart Energy Systems','Health & Wellbeing'],
-				services: ['Service1','Service2','Service3','All Services'],
-				eLLType: ['Office', 'Lab', 'Other']
+				City: ['Berlin'],
+				InnovationArea: ['Computing in the Cloud', 'Smart Energy Systems','Health & Wellbeing'],
+				Services: ['Service1','Service2','Service3','All Services'],
+				LocationType: ['Office', 'Lab', 'Other']
 			},
 			link: 'http://www.google.de'
 
