@@ -62,17 +62,17 @@
 		<img src='<%= logo %>' alt='<%= title %>' title='<%= title %>' width='50px' height='50px'>
 		<h2><span><%= title %></span></h2>
 		<ul>
-			<% if (filterable.nationalCLC) { %>
-				<li><strong>nationalCLC:</strong> <%= filterable.nationalCLC %></li>
+			<% if (filterable.City) { %>
+				<li><strong>City:</strong> <%= filterable.City %></li>
 			<% } %>
-			<% if (filterable.actionLines) { %>
-			<li><strong>actionLines:</strong> <%= filterable.actionLines %></li>
+			<% if (filterable.InnovationArea) { %>
+			<li><strong>InnovationArea:</strong> <%= filterable.InnovationArea %></li>
 			<% } %>
 			<% if (filterable.eLLType) { %>
-			<li><strong>eLLType: </strong>	<%= filterable.eLLType %></li>
+			<li><strong>LocationType: </strong>	<%= filterable.LocationType %></li>
 			<% } %>
-			<% if (filterable.services) { %>
-			<li><strong>services: </strong>	<%= filterable.services %></li>
+			<% if (filterable.LocationType) { %>
+			<li><strong>Services: </strong>	<%= filterable.Services %></li>
 			<% } %>
 			<% if (link) { %>
 			<li><strong>link:</strong><%= link %></li>
