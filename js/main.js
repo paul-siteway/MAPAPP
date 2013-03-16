@@ -74,7 +74,7 @@
 			buttonClass: 'btn',
 			buttonWidth: 'auto',
 			maxHeight: false,
-			buttonText: function(options) {
+			buttonText: function(options, element) {
 				if (options.length == 0) {
 					return element.parent().attr('data-name');
 				}
