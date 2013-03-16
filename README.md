@@ -8,7 +8,8 @@ A single page application for displaying and filtering locations  on a google ma
 
 frontend toolkit:
 - [twitter boostrap] (http://twitter.github.com/bootstrap/)
-- [bootstrap-multiselect] (https://github.com/davidstutz/)bootstrap-multiselect
+- [bootstrap-multiselect] (https://github.com/davidstutz/)
+
 javascript mvc framework:
 - [backbone.js] (http://backbonejs.org/)
 - [backbone query] (https://github.com/davidgtonge/backbone_query)
