@@ -79,7 +79,7 @@
 					return element.parent().attr('data-name');
 				}
 				else if (options.length > 1) {
-					return options.length + ' selected  <b class="caret"></b>';
+					return  element.parent().attr('data-name')+' ('+options.length + ') <b class="caret"></b>';
 				}
 				else {
 					var selected = '';
@@ -203,7 +203,7 @@
 		render: function(){
 			var id = this.model.get('id');
 			this.$el.html( this.template(this.model.toJSON()) ).attr('id', 'ort'+id);
-			MapApp.vents.trigger('change');
+			MapApp.vents.trigger('ortAdded');
 			return this;
 		}, 
 		showAlert: function () {
@@ -328,10 +328,15 @@
 		className: 'filters',
 		initialize: function () {
 			MapApp.vents.on('selectChanged', this.selectChanged, this);
+			this.collection.on('add', this.update, this);
+			this.collection.on('remove', this.update, this);
+			this.update();
+		},
+		update: function () {
 			this.createFilterList();
 			this.createOptionsLists();
 			this.render();
-			// MapApp.activateMultiselect();
+			MapApp.activateMultiselect();
 		},
 		createFilterList: function () {
 			// console.log('creatingFilterList');
@@ -401,7 +406,7 @@
 		initialize: function(){
 			// vents.on('ort:show', this.showOrt, this);
 			MapApp.vents.on('ort:showAll', this.showAll, this);
-			MapApp.vents.on('change', this.showAll, this);
+			MapApp.vents.on('ortAdded', this.showAll, this);
 			this.collection.on('add', this.showAll, this);
 			this.collection.on('remove', this.showAll, this);
 			this.showAll();
