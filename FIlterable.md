@@ -1,1 +1,5 @@
-NameNational Co-Location Centre:Type of E&LL facilityAction Line(s)Available services
+Name:
+National Co-Location Centre: City
+Type of E&LL facility : Location Type
+Action Line(s) : Innovation Areas
+Available services: Services
