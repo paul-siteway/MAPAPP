@@ -82,14 +82,6 @@
 				else if (options.length > 1) {
 					return  options.first().parent().attr('data-name') +' ('+options.length + ') <b class="caret"></b>';
 				}
-				else {
-					var selected = '';
-					options.each(function() {
-						selected += $(this).text() + ', ';
-					});
-					return selected.substr(0, selected.length -2) + ' <b class="caret"></b>';
-				}
-				//buttontext
 			},
 			onChange: function(element, checked) {
 				console.log('change');
