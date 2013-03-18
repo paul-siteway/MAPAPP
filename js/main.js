@@ -74,12 +74,13 @@
 			buttonClass: 'btn',
 			buttonWidth: 'auto',
 			maxHeight: false,
-			buttonText: function(options, element) {
-				if (options.length == 0) {
-					return element.parent().attr('data-name');
+			buttonText: function(options) {
+
+				if (options.length === 0) {
+					return  options.first().parent().attr('data-name');
 				}
 				else if (options.length > 1) {
-					return  element.parent().attr('data-name')+' ('+options.length + ') <b class="caret"></b>';
+					return  options.first().parent().attr('data-name') +' ('+options.length + ') <b class="caret"></b>';
 				}
 				else {
 					var selected = '';
@@ -89,16 +90,15 @@
 					return selected.substr(0, selected.length -2) + ' <b class="caret"></b>';
 				}
 				//buttontext
-			}
-			,
+			},
 			onChange: function(element, checked) {
-				console.log('change')
+				console.log('change');
 				filtername = element.parent().attr('data-name');
 				MapApp.vents.trigger('selectChanged', element,filtername,checked);
 			}
 
 		});
-	}//activateMultiselect
+	};//activateMultiselect
 	
 
 
@@ -295,7 +295,7 @@
 			//this.$el.html( this.template( {optionName: optionName} ));	
 		},
 		renderallOptions: function () {
-			 // console.log('Rendering Options');
+			// console.log('Rendering Options');
 			var arrayHolder = MapApp.optionenCollection.at(this.options.index).get('filteroptions');
 			
 			//create an Array for all Filtersoptions
@@ -306,7 +306,7 @@
 				_.each(option, function (inhalt,index){
 					//console.log('der Inhalt des '+index+' items ist: '+inhalt);
 					//add each array content to the corresponding filter Array
-					MapApp["filterOptionsArray"+this.options.index].push(inhalt)
+					MapApp["filterOptionsArray"+this.options.index].push(inhalt);
 				},this);
 			},this);
 			//make the FilterArray Unique
@@ -372,14 +372,14 @@
 						var option = ort.get('filterable')[filtername];
 						tempArray.push(option);
 				});
-					console.log('####'+tempArray)
+					console.log('####'+tempArray);
 				MapApp.optionenCollection.at(index).set('filteroptions', tempArray);
 			});
 
 		},
 		render: function () {
 			////Filter trough all ITEMS
-			this.$el.html('')
+			this.$el.html('');
 			_.each(MapApp.filterList, function (filter,index) {
 				//for each vreate a new View.
 				MapApp.filterView = new MapApp.Views.Filter({index:index}); 
@@ -388,7 +388,7 @@
 			},this);
 			return this;
 		},selectChanged :  function (element, filtername, checked) {
-			console.log('the element is: '+element.text()+' the opion is'+checked+' the filtername is:'+filtername)
+			console.log('the element is: '+element.text()+' the opion is'+checked+' the filtername is:'+filtername);
 		}
 	});
 
