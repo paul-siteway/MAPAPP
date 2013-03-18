@@ -79,9 +79,9 @@
 				if (options.length === 0) {
 					return  options.first().parent().attr('data-name');
 				}
-				else if (options.length > 1) {
+				else if (options.length > 0) {
 					return  options.first().parent().attr('data-name') +' ('+options.length + ') <b class="caret"></b>';
-				}
+				}//buttontext
 			},
 			onChange: function(element, checked) {
 				console.log('change');
