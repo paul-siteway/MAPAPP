@@ -77,7 +77,7 @@
 			buttonText: function(options) {
 
 				if (options.length === 0) {
-					return  options.first().parent().attr('data-name');
+					return  options.first().parent().attr('data-name')+'<b class="caret"></b>';
 				}
 				else if (options.length > 0) {
 					return  options.first().parent().attr('data-name') +' ('+options.length + ') <b class="caret"></b>';
