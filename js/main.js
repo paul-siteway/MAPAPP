@@ -74,17 +74,17 @@
 			buttonClass: 'btn',
 			buttonWidth: 'auto',
 			maxHeight: false,
-			buttonText: function(options) {
-
+			buttonText: function(options, select) {
+				console.log(select.attr('data-name'));
 				if (options.length === 0) {
-					return  options.first().parent().attr('data-name')+'<b class="caret"></b>';
+					return  select.attr('data-name')+'<b class="caret"></b>';
 				}
 				else if (options.length > 0) {
-					return  options.first().parent().attr('data-name') +' ('+options.length + ') <b class="caret"></b>';
+					return  select.attr('data-name') +' ('+options.length + ') <b class="caret"></b>';
 				}//buttontext
 			},
 			onChange: function(element, checked) {
-				console.log('change');
+				// console.log('change');
 				filtername = element.parent().attr('data-name');
 				MapApp.vents.trigger('selectChanged', element,filtername,checked);
 			}
