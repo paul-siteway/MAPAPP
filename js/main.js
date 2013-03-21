@@ -75,7 +75,9 @@
 			buttonWidth: 'auto',
 			maxHeight: false,
 			buttonText: function(options, select) {
+
 				console.log(select.attr('data-name'));
+				console.log('OptionsLength'+options.length );
 				if (options.length === 0) {
 					return  select.attr('data-name')+'<b class="caret"></b>';
 				}
@@ -88,8 +90,8 @@
 				filtername = element.parent().attr('data-name');
 				MapApp.vents.trigger('selectChanged', element,filtername,checked);
 			}
-
 		});
+	
 	};//activateMultiselect
 	
 
