@@ -2,6 +2,7 @@ MAPAPP
 ======
 
 
+
 A single page application for displaying and filtering locations  on a google map.
 
 # This project is using: 
