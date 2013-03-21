@@ -74,8 +74,6 @@
 			buttonClass: 'btn',
 			buttonWidth: 'auto',
 			maxHeight: false,
-<<<<<<< HEAD
-<<<<<<< HEAD
       		buttonText: function(options, select) {
       			console.log(select.attr('data-name'));
 		        console.log('OptionsLength'+options.length );
@@ -87,61 +85,20 @@
 				}
 				else {
 					return  select.attr('data-name')+'<b class="caret"></b>';
-=======
-=======
->>>>>>> updated filterView
-			buttonText: function(options, select) {
-
-				console.log(select.attr('data-name'));
-				console.log('OptionsLength'+options.length );
-				if (options.length === 0) {
-					return  select.attr('data-name')+'<b class="caret"></b>';
-				}
-				else if (options.length > 0) {
-					return  select.attr('data-name') +' ('+options.length + ') <b class="caret"></b>';
-<<<<<<< HEAD
->>>>>>> 916083c384bd383d39e3c712e9d8df7b3733ae5f
-=======
-=======
-      		buttonText: function(options, select) {
-      			console.log(select.attr('data-name'));
-		        console.log('OptionsLength'+options.length );
-				if (options.length == 0) {
-					return  select.attr('data-name')+'<b class="caret"></b>';
-				}
-				else if (options.length > 0) {
-					return  select.attr('data-name')+' ('+options.length + ') <b class="caret"></b>';
-				}
-				else {
-					return  select.attr('data-name')+'<b class="caret"></b>';
->>>>>>> updated filterView
->>>>>>> updated filterView
 				}//buttontext
 			},
 			onChange: function(element, checked) {
-				// console.log('change');
+				console.log('change')
 				filtername = element.parent().attr('data-name');
 				MapApp.vents.trigger('selectChanged', element,filtername,checked);
 			}
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> updated filterView
 		});
 
 		$('.multiselect option:first-child').each(function() {
 			item = $(this).val().toString();
   			$(this).parent().multiselect('deselect', item);
-<<<<<<< HEAD
-=======
->>>>>>> 916083c384bd383d39e3c712e9d8df7b3733ae5f
-=======
->>>>>>> updated filterView
->>>>>>> updated filterView
 		});
-	
-	};//activateMultiselect
+	}//activateMultiselect
 	
 
 
@@ -339,7 +296,7 @@
 			//this.$el.html( this.template( {optionName: optionName} ));	
 		},
 		renderallOptions: function () {
-			// console.log('Rendering Options');
+			 // console.log('Rendering Options');
 			var arrayHolder = MapApp.optionenCollection.at(this.options.index).get('filteroptions');
 			
 			//create an Array for all Filtersoptions
@@ -350,7 +307,7 @@
 				_.each(option, function (inhalt,index){
 					//console.log('der Inhalt des '+index+' items ist: '+inhalt);
 					//add each array content to the corresponding filter Array
-					MapApp["filterOptionsArray"+this.options.index].push(inhalt);
+					MapApp["filterOptionsArray"+this.options.index].push(inhalt)
 				},this);
 			},this);
 			//make the FilterArray Unique
@@ -417,14 +374,14 @@
 						var option = ort.get('filterable')[filtername];
 						tempArray.push(option);
 				});
-					console.log('####'+tempArray);
+					console.log('####'+tempArray)
 				MapApp.optionenCollection.at(index).set('filteroptions', tempArray);
 			});
 
 		},
 		render: function () {
 			////Filter trough all ITEMS
-			this.$el.html('');
+			this.$el.html('')
 			_.each(MapApp.filterList, function (filter,index) {
 				//for each vreate a new View.
 				MapApp.filterView = new MapApp.Views.Filter({index:index}); 
@@ -433,7 +390,6 @@
 			},this);
 			return this;
 		},selectChanged :  function (element, filtername, checked) {
-<<<<<<< HEAD
 				query = element.text();
 				console.log('the element is: '+query);
 				console.log('the element is: '+checked);
@@ -449,9 +405,6 @@
 				this.collection.reset(filteredCollection);
 			}
 
-=======
-			console.log('the element is: '+element.text()+' the opion is'+checked+' the filtername is:'+filtername);
->>>>>>> 916083c384bd383d39e3c712e9d8df7b3733ae5f
 		}
 	});
 

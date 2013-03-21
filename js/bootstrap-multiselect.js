@@ -39,7 +39,7 @@
 
 					// Call any defined change handler
 					return prev(option, checked);
-				};
+				}
 			},
 			update: function (element) {
 				var blockRefresh = $(element).data('blockRefresh') || false;
@@ -60,22 +60,7 @@
 		}
 		
 		this.$container = $(this.options.buttonContainer)
-<<<<<<< HEAD
-<<<<<<< HEAD
 			.append('<button type="button" class="multiselect dropdown-toggle ' + this.options.buttonClass + '" data-toggle="dropdown">' + this.options.buttonText($('option:selected', select), this.$select) + '</button>')
-=======
-
-			.append('<button type="button" class="multiselect dropdown-toggle ' + this.options.buttonClass + '" data-toggle="dropdown">' + this.options.buttonText($('option:selected', select), this.$select) + '</button>')
-
->>>>>>> 916083c384bd383d39e3c712e9d8df7b3733ae5f
-=======
-
-			.append('<button type="button" class="multiselect dropdown-toggle ' + this.options.buttonClass + '" data-toggle="dropdown">' + this.options.buttonText($('option:selected', select), this.$select) + '</button>')
-
-=======
-			.append('<button type="button" class="multiselect dropdown-toggle ' + this.options.buttonClass + '" data-toggle="dropdown">' + this.options.buttonText($('option:selected', select), this.$select) + '</button>')
->>>>>>> updated filterView
->>>>>>> updated filterView
 			.append('<ul class="dropdown-menu"></ul>');
 
 		if (this.options.buttonWidth) {
@@ -98,7 +83,7 @@
 		this.$select
 			.hide()
 			.after(this.$container);
-	}
+	};
 
 	Multiselect.prototype = {
 		
@@ -106,25 +91,8 @@
 			// Default text function will either print 'None selected' in case no option is selected,
 			// or a list of the selected options up to a length of 3 selected options.
 			// If more than 3 options are selected, the number of selected options is printed.
-<<<<<<< HEAD
-<<<<<<< HEAD
 			buttonText: function(options, select) {
 				if (options.length == 0) {
-=======
-=======
->>>>>>> updated filterView
-
-			buttonText: function(options, select) {
-
-				if (options.length === 0) {
-<<<<<<< HEAD
->>>>>>> 916083c384bd383d39e3c712e9d8df7b3733ae5f
-=======
-=======
-			buttonText: function(options, select) {
-				if (options.length == 0) {
->>>>>>> updated filterView
->>>>>>> updated filterView
 					return 'None selected <b class="caret"></b>';
 				}
 				else if (options.length > 3) {
@@ -147,7 +115,7 @@
 			buttonContainer: '<div class="btn-group" />',
 			// Maximum height of the dropdown menu.
 			// If maximum height is exceeded a scrollbar will be displayed.
-			maxHeight: false
+			maxHeight: false,
 		},
 
 		constructor: Multiselect,
@@ -165,7 +133,7 @@
 			var checkbox = $('ul li input[value="' + $(element).val() + '"]', this.$container);
 			
 			if ($(element).is(':disabled')) {
-				checkbox.attr('disabled', 'disabled').prop('disabled', 'disabled').parents('li').addClass('disabled');
+				checkbox.attr('disabled', 'disabled').prop('disabled', 'disabled').parents('li').addClass('disabled')
 			}
 			
 			checkbox.prop('checked', selected);
@@ -218,22 +186,7 @@
 				}
 				
 				var options = $('option:selected', this.$select);
-<<<<<<< HEAD
-<<<<<<< HEAD
 				$('button', this.$container).html(this.options.buttonText(options, this.$select));
-=======
-
-				$('button', this.$container).html(this.options.buttonText(options, this.$select));
-
->>>>>>> 916083c384bd383d39e3c712e9d8df7b3733ae5f
-=======
-
-				$('button', this.$container).html(this.options.buttonText(options, this.$select));
-
-=======
-				$('button', this.$container).html(this.options.buttonText(options, this.$select));
->>>>>>> updated filterView
->>>>>>> updated filterView
 
 				this.options.onChange(option, checked);
 			}, this));
@@ -263,16 +216,6 @@
 			}, this));
 
 			$('button', this.$container).html(this.options.buttonText($('option:selected', this.$select), this.$select));
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
->>>>>>> 916083c384bd383d39e3c712e9d8df7b3733ae5f
-=======
-
-=======
->>>>>>> updated filterView
->>>>>>> updated filterView
 		},
 		
 		// Select an option by its value.
@@ -287,22 +230,7 @@
 			option.prop('selected', 'selected');
 			
 			var options = $('option:selected', this.$select);
-<<<<<<< HEAD
-<<<<<<< HEAD
 			$('button', this.$container).html(this.options.buttonText(options, this.$select));
-=======
-
-			$('button', this.$container).html(this.options.buttonText(options, this.$select));
-
->>>>>>> 916083c384bd383d39e3c712e9d8df7b3733ae5f
-=======
-
-			$('button', this.$container).html(this.options.buttonText(options, this.$select));
-
-=======
-			$('button', this.$container).html(this.options.buttonText(options, this.$select));
->>>>>>> updated filterView
->>>>>>> updated filterView
 		},
 		
 		// Deselect an option by its value.
@@ -317,22 +245,7 @@
 			option.removeProp('selected');
 			
 			var options = $('option:selected', this.$select);
-<<<<<<< HEAD
-<<<<<<< HEAD
 			$('button', this.$container).html(this.options.buttonText(options, this.$select));
-=======
-
-			$('button', this.$container).html(this.options.buttonText(options, this.$select));
-
->>>>>>> 916083c384bd383d39e3c712e9d8df7b3733ae5f
-=======
-
-			$('button', this.$container).html(this.options.buttonText(options, this.$select));
-
-=======
-			$('button', this.$container).html(this.options.buttonText(options, this.$select));
->>>>>>> updated filterView
->>>>>>> updated filterView
 		},
 		
 		// Rebuild the whole dropdown menu.
@@ -362,16 +275,5 @@
 				data[option](parameter);
 			}
 		});
-<<<<<<< HEAD
-<<<<<<< HEAD
 	}
-=======
-	};
->>>>>>> 916083c384bd383d39e3c712e9d8df7b3733ae5f
-=======
-	};
-=======
-	}
->>>>>>> updated filterView
->>>>>>> updated filterView
 }(window.jQuery);
