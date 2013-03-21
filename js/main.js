@@ -74,29 +74,29 @@
 			buttonClass: 'btn',
 			buttonWidth: 'auto',
 			maxHeight: false,
-			buttonText: function(options, element) {
+      		buttonText: function(options, select) {
+      			console.log(select.attr('data-name'));
+		        console.log('OptionsLength'+options.length );
 				if (options.length == 0) {
-					return element.parent().attr('data-name');
+					return  select.attr('data-name')+'<b class="caret"></b>';
 				}
-				else if (options.length > 1) {
-					return  element.parent().attr('data-name')+' ('+options.length + ') <b class="caret"></b>';
+				else if (options.length > 0) {
+					return  select.attr('data-name')+' ('+options.length + ') <b class="caret"></b>';
 				}
 				else {
-					var selected = '';
-					options.each(function() {
-						selected += $(this).text() + ', ';
-					});
-					return selected.substr(0, selected.length -2) + ' <b class="caret"></b>';
-				}
-				//buttontext
-			}
-			,
+					return  select.attr('data-name')+'<b class="caret"></b>';
+				}//buttontext
+			},
 			onChange: function(element, checked) {
 				console.log('change')
 				filtername = element.parent().attr('data-name');
 				MapApp.vents.trigger('selectChanged', element,filtername,checked);
 			}
+		});
 
+		$('.multiselect option:first-child').each(function() {
+			item = $(this).val().toString();
+  			$(this).parent().multiselect('deselect', item);
 		});
 	}//activateMultiselect
 	
