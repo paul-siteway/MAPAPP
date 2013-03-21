@@ -75,6 +75,7 @@
 			buttonWidth: 'auto',
 			maxHeight: false,
 <<<<<<< HEAD
+<<<<<<< HEAD
       		buttonText: function(options, select) {
       			console.log(select.attr('data-name'));
 		        console.log('OptionsLength'+options.length );
@@ -87,6 +88,8 @@
 				else {
 					return  select.attr('data-name')+'<b class="caret"></b>';
 =======
+=======
+>>>>>>> updated filterView
 			buttonText: function(options, select) {
 
 				console.log(select.attr('data-name'));
@@ -96,7 +99,23 @@
 				}
 				else if (options.length > 0) {
 					return  select.attr('data-name') +' ('+options.length + ') <b class="caret"></b>';
+<<<<<<< HEAD
 >>>>>>> 916083c384bd383d39e3c712e9d8df7b3733ae5f
+=======
+=======
+      		buttonText: function(options, select) {
+      			console.log(select.attr('data-name'));
+		        console.log('OptionsLength'+options.length );
+				if (options.length == 0) {
+					return  select.attr('data-name')+'<b class="caret"></b>';
+				}
+				else if (options.length > 0) {
+					return  select.attr('data-name')+' ('+options.length + ') <b class="caret"></b>';
+				}
+				else {
+					return  select.attr('data-name')+'<b class="caret"></b>';
+>>>>>>> updated filterView
+>>>>>>> updated filterView
 				}//buttontext
 			},
 			onChange: function(element, checked) {
@@ -105,13 +124,21 @@
 				MapApp.vents.trigger('selectChanged', element,filtername,checked);
 			}
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> updated filterView
 		});
 
 		$('.multiselect option:first-child').each(function() {
 			item = $(this).val().toString();
   			$(this).parent().multiselect('deselect', item);
+<<<<<<< HEAD
 =======
 >>>>>>> 916083c384bd383d39e3c712e9d8df7b3733ae5f
+=======
+>>>>>>> updated filterView
+>>>>>>> updated filterView
 		});
 	
 	};//activateMultiselect
