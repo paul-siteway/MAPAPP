@@ -148,7 +148,7 @@
 	// ################################
 	// ########  ORT M O D E L  #######
 	// ################################
-	MapApp.Models.Ort = Backbone.Model.extend({
+	MapApp.Models.Ort = Backbone.DeepModel.extend({
 
 		defaults: {
 			lat: 51.511214,
@@ -266,7 +266,8 @@
 			
 			var type = $('#ellType').find('option:selected').val();
 			console.log('startFilterType:' +type);
-			this.collection.reset(this.collection.query({ eLLType: {$like: type}}) );
+			//this.collection.reset(this.collection.query({ eLLType: {$like: type}}) );
+
 		}
 	});
 	
@@ -330,6 +331,7 @@
 			MapApp.vents.on('selectChanged', this.selectChanged, this);
 			this.collection.on('add', this.update, this);
 			this.collection.on('remove', this.update, this);
+			this.collection.on('reset', this.update, this);
 			this.update();
 		},
 		update: function () {
@@ -388,7 +390,21 @@
 			},this);
 			return this;
 		},selectChanged :  function (element, filtername, checked) {
-			console.log('the element is: '+element.text()+' the opion is'+checked+' the filtername is:'+filtername)
+				query = element.text();
+				console.log('the element is: '+query);
+				console.log('the element is: '+checked);
+				console.log('the filtername is: '+filtername);
+				
+				queryObject = '{"filterable.'+filtername+'City":{$contains: "'+query+'"}}'
+				console.log(queryObject);
+			if(checked){
+
+	
+				
+				filteredCollection = this.collection.query(queryObject);
+				this.collection.reset(filteredCollection);
+			}
+
 		}
 	});
 
@@ -567,6 +583,9 @@
 			lat: 53.519171,
 			lon: 14.406091, 
 			logo: "http://lorempixel.com/g/80/80/nature/",
+			deep: {
+				title: ['hello']
+			},
 			filterable: {
 				City: ['Berlin'],
 				InnovationArea: ['Computing in the Cloud', 'Smart Energy Systems','Health & Wellbeing'],
