@@ -46,7 +46,7 @@
 			//alert('You clicked in this marker '+title);
 			},
 			infoWindow: {
-				content: $('#orteView #ort'+id).html()
+				content: $('#locationsView #location'+id).html()
 			}
 		});
 		return 'marker added';
@@ -88,7 +88,7 @@
 				}//buttontext
 			},
 			onChange: function(element, checked) {
-				console.log('change');
+				// console.log('change');
 				filtername = element.parent().attr('data-name');
 				MapApp.vents.trigger('selectChanged', element,filtername,checked);
 			}
@@ -122,10 +122,10 @@
 		},
 		show: function (id) {
 			console.log('show:'+id) ;
-			MapApp.vents.trigger('ort:show', id);
+			MapApp.vents.trigger('location:show', id);
 		},
 		showAll: function (id) {
-			MapApp.vents.trigger('ort:showAll', id);
+			MapApp.vents.trigger('location:showAll', id);
 		},
 		add: function (id,title) {
 			console.log('add id:'+id+' title:'+title) ;
@@ -146,14 +146,14 @@
 
 
 	// ################################
-	// ########  ORT M O D E L  #######
+	// ########  LOCATION M O D E L  #######
 	// ################################
-	MapApp.Models.Ort = Backbone.DeepModel.extend({
+	MapApp.Models.Locations = Backbone.DeepModel.extend({
 
 		defaults: {
 			lat: 51.511214,
 			lon: -0.119824,
-			title: 'Ich bin der Default Titel',
+			title: 'im am the default Title',
 			logo: 'http://lorempixel.com/80/80/people/',
 			link: 'http://www.google.de'
 		},
@@ -181,19 +181,19 @@
 
 
 	// ################################
-	// #####  SINGLE ORT V I E W   ####
+	// #####  SINGLE Location V I E W   ####
 	// ################################
 
 	 
-	MapApp.Views.Ort = Backbone.View.extend({
+	MapApp.Views.Location = Backbone.View.extend({
 		tagName : "div", 
-		className: 'ort',
+		className: 'location',
 		events: {
-			'click' : 'showOrtInMap',
+			'click' : 'showLocationInMap',
 			'click strong': 'showAlert',
 			'click button': 'destroy'
 		},
-		template: template('ortTemplate'),
+		template: template('locationTemplate'),
 		initialize: function(){
 			this.model.on('change', this.render, this );
 			this.model.on('destroy', this.remove, this );
@@ -202,14 +202,14 @@
 		},
 		render: function(){
 			var id = this.model.get('id');
-			this.$el.html( this.template(this.model.toJSON()) ).attr('id', 'ort'+id);
-			MapApp.vents.trigger('ortAdded');
+			this.$el.html( this.template(this.model.toJSON()) ).attr('id', 'location'+id);
+			MapApp.vents.trigger('locationAdded');
 			return this;
 		}, 
 		showAlert: function () {
-			var newOrtTitle = prompt('edit the Title:',this.model.get('title') );
-			if(!newOrtTitle) return;
-			this.model.set('title', newOrtTitle);
+			var newLocationTitle = prompt('edit the Title:',this.model.get('title') );
+			if(!newLocationTitle) return;
+			this.model.set('title', newLocationTitle);
 		},
 		destroy: function () {
 			this.model.destroy();
@@ -217,8 +217,8 @@
 		remove: function () {
 			this.$el.remove();
 		},
-		showOrtInMap: function () {
-			console.log(this.model.get('id'));
+		showLocationInMap: function () {
+			// console.log(this.model.get('id'));
 			var lat = this.model.get('lat');
 			var lon = this.model.get('lon');
 			MapApp.map.setCenter(lat, lon);
@@ -229,10 +229,10 @@
 
 
 	// ################################
-	// ########## ORTE VIEW  ########## - View for all Orte
+	// ########## LOCATIONS VIEW  ########## - View for all Locations
 	// ################################
 
-	MapApp.Views.Orte = Backbone.View.extend({
+	MapApp.Views.Locations = Backbone.View.extend({
 		tagName: 'div' ,
 		initialize: function() {
 			this.collection.on('add', this.addOne, this);
@@ -241,31 +241,31 @@
 			MapApp.vents.on('startSearch', this.search, this);
 		},
 		render: function(){
-			console.log('redering ORTE VIEW');
+			// console.log('redering LOCATIONS VIEW');
 			this.$el.html('');
 			this.collection.each(this.addOne, this);
 			return this;
 		},
-		renderFiltered : function(orte){
+		renderFiltered : function(locations){
 
-		$("#orteView").html("");
-		orte.each(function(ort){
-			var view = new MapApp.Views.Ort({
-				model: ort,
+		$("#locationsView").html("");
+		locations.each(function(location){
+			var view = new MapApp.Views.Location({
+				model: location,
 				collection: this.collection
 			});
-			$("#orteView").append(view.render().el);
+			$("#locationsView").append(view.render().el);
 		});
 		return this;
 		},
-		addOne: function (ort) {
-			var ortView = new MapApp.Views.Ort({model: ort});
-			this.$el.append(ortView.render().el);
+		addOne: function (location) {
+			var locationView = new MapApp.Views.Location({model: location});
+			this.$el.append(locationView.render().el);
 		},
 		startFilterType: function(){
 			
 			var type = $('#ellType').find('option:selected').val();
-			console.log('startFilterType:' +type);
+			// console.log('startFilterType:' +type);
 			//this.collection.reset(this.collection.query({ eLLType: {$like: type}}) );
 
 		}
@@ -297,7 +297,7 @@
 		},
 		renderallOptions: function () {
 			// console.log('Rendering Options');
-			var arrayHolder = MapApp.optionenCollection.at(this.options.index).get('filteroptions');
+			var arrayHolder = MapApp.optionsCollection.at(this.options.index).get('filteroptions');
 			
 			//create an Array for all Filtersoptions
 			MapApp["filterOptionsArray"+this.options.index] = [];
@@ -345,9 +345,9 @@
 			//Empty the Filter list
 			MapApp.filterList = [];
 			//Lopp over all Locations in collection
-			this.collection.each(function (ort) {
+			this.collection.each(function (location) {
 				//get only the Filterable Attributes
-				var filterableList = ort.get('filterable');
+				var filterableList = location.get('filterable');
 				//Push each Attribute to List
 				for (var key in filterableList) {
 					MapApp.filterList.push(key);
@@ -359,23 +359,23 @@
 		createOptionsLists: function () {
 			MapApp.optionsLists = {};
 			// reset the optionen Collection 
-			MapApp.optionenCollection.reset();
+			MapApp.optionsCollection.reset();
 			//Go trough each Filter in the Filterlist
 			_.each(MapApp.filterList,function (filtername, index){
 					//Add a empty Model to ne optionen Collection
-					MapApp.optionenCollection.add({});
+					MapApp.optionsCollection.add({});
 					//Set the Filtername to the Model in Collection
-					MapApp.optionenCollection.at(index).set('filtername',filtername);
+					MapApp.optionsCollection.at(index).set('filtername',filtername);
 					
 					//Temp array for all Options
 					var tempArray = [];
-					//Go trough all Orte and get each FIltername
-					MapApp.orteCollection.each(function (ort) {
-						var option = ort.get('filterable')[filtername];
+					//Go trough all Locations and get each FIltername
+					MapApp.locationsCollection.each(function (location) {
+						var option = location.get('filterable')[filtername];
 						tempArray.push(option);
 				});
-					console.log('####'+tempArray);
-				MapApp.optionenCollection.at(index).set('filteroptions', tempArray);
+					// console.xlog('####'+tempArray);
+				MapApp.optionsCollection.at(index).set('filteroptions', tempArray);
 			});
 
 		},
@@ -392,11 +392,20 @@
 		},	updateQueryObject: function() {
 			MapApp.queryObject = {};
 			$('select.multiselect').each(function () {
-				filtername = 'filterable'+$(this).attr('data-name');
-				selected = $(this).val();
+				filtername = 'filterable.'+$(this).attr('data-name');
+				selected = {$in: $(this).val() };
+				if($(this).val() == null) return;
 				MapApp.queryObject[filtername] = selected;
 			});
+			console.log('##################');
+			console.log('THE COLLECTION IS:');
+			console.log(MapApp.locationsCollection);
+			console.log('THE QUERY OBJECT IS: ');
 			console.log(MapApp.queryObject);
+
+			filteredLocations = MapApp.locationsCollection.query(MapApp.queryObject);
+			console.log('THE RESULT IS: ');
+			console.log(filteredLocations);
 		},
 		selectChanged :  function (element, filtername, checked) {
 				
@@ -437,9 +446,9 @@
 			'click #removeAll' : 'removeAll'
 		},
 		initialize: function(){
-			// vents.on('ort:show', this.showOrt, this);
-			MapApp.vents.on('ort:showAll', this.showAll, this);
-			MapApp.vents.on('ortAdded', this.showAll, this);
+			// vents.on('location:show', this.addLocation, this);
+			MapApp.vents.on('location:showAll', this.showAll, this);
+			MapApp.vents.on('locationAdded', this.showAll, this);
 			this.collection.on('add', this.showAll, this);
 			this.collection.on('remove', this.showAll, this);
 			this.showAll();
@@ -447,22 +456,22 @@
 		},
 		showAll: function() {
 			this.removeAll();
-			this.collection.each(this.showOrt, this);
+			this.collection.each(this.addLocation, this);
 		},
 		removeAll: function () {
 			MapApp.removeMarkers();
 		},
-		showOrt: function(ort){
-			console.log('showORT In MAP VIEW');			
-			var lat = ort.get('lat');
-			var lon = ort.get('lon');
-			var title = ort.get('title');
-			var logo = ort.get('logo');
-			var id = ort.get('id');
-			var nationalCLC = ort.get('nationalCLC');
-			var actionLines = ort.get('actionLines');
-			var eLLType = ort.get('eLLType');
-			var link = ort.get('link');
+		addLocation: function(location){
+			// console.log('show LOCATION In MAP VIEW');			
+			var lat = location.get('lat');
+			var lon = location.get('lon');
+			var title = location.get('title');
+			var logo = location.get('logo');
+			var id = location.get('id');
+			var nationalCLC = location.get('nationalCLC');
+			var actionLines = location.get('actionLines');
+			var eLLType = location.get('eLLType');
+			var link = location.get('link');
 			MapApp.addLocationToMap(id, lat, lon, title);
 		},
 		destroyMarker: function (id) {
@@ -475,12 +484,12 @@
 
 
 	// ########################################
-	// ##########  ADD ORT V I E W   ########## 
+	// ##########  ADD LOCATION V I E W  ########## 
 	// ########################################
 	
 
-	MapApp.Views.AddOrt = Backbone.View.extend({
-		el: '#addOrt',
+	MapApp.Views.CreateLocation = Backbone.View.extend({
+		el: '#addLocation',
 		events: {
 			'submit': 'submit'
 		},
@@ -492,9 +501,9 @@
 			var newLat = $(e.currentTarget).find('input.lat').val();
 			var newLon = $(e.currentTarget).find('input.lon').val();
 			// if(! $.trim(newTitle) ) return "title must not be empty!";
-			var ort = new MapApp.Models.Ort();
-			ort.set({title: newTitle, lat: newLat, lon: newLon});
-			this.collection.add(ort);
+			var location = new MapApp.Models.Locations();
+			location.set({title: newTitle, lat: newLat, lon: newLon});
+			this.collection.add(location);
 			//console.log('newTitle is:'+newTitle+' isValid:'+$.trim(newTitle));
 		}
 	});
@@ -506,8 +515,8 @@
 
 
 
-	MapApp.Collections.Orte = Backbone.QueryCollection.extend({
-		model: MapApp.Models.Ort
+	MapApp.Collections.Locations = Backbone.QueryCollection.extend({
+		model: MapApp.Models.Locations
 	});
 
 
@@ -522,11 +531,11 @@
 		}
 	});
 
-	MapApp.Collections.Optionen = Backbone.QueryCollection.extend({
+	MapApp.Collections.Options = Backbone.QueryCollection.extend({
 		model: MapApp.Models.option
 	});
 
-	MapApp.optionenCollection = new MapApp.Collections.Optionen([]);
+	MapApp.optionsCollection = new MapApp.Collections.Options([]);
 
 
 
@@ -534,7 +543,7 @@
 	//########## CREATE VIEWS AND COLLECTIONS
 	//########################################
 
-	MapApp.orteCollection = new MapApp.Collections.Orte([
+	MapApp.locationsCollection = new MapApp.Collections.Locations([
 		{	
 			id: 0,
 			title: "Experience & Living Lab Berlin",
@@ -603,7 +612,7 @@
 				title: ['hello']
 			},
 			filterable: {
-				City: ['Berlin'],
+				City: ['Berlin', 'Hamburg'],
 				InnovationArea: ['Computing in the Cloud', 'Smart Energy Systems','Health & Wellbeing'],
 				Services: ['Service1','Service2','Service3','All Services'],
 				LocationType: ['Office', 'Lab', 'Other']
@@ -620,20 +629,20 @@
 	
 	
 
-	MapApp.filterView = new MapApp.Views.Filter({model:MapApp.Models.Ort});
+	MapApp.filterView = new MapApp.Views.Filter({model:MapApp.Models.Locations});
 
 	
-	MapApp.filtersView = new MapApp.Views.Filters({collection: MapApp.orteCollection});
+	MapApp.filtersView = new MapApp.Views.Filters({collection: MapApp.locationsCollection});
 	$('#filterLocations').append( MapApp.filtersView.el);
 
-	MapApp.orteView = new MapApp.Views.Orte({collection: MapApp.orteCollection});
-	$('#orteView').append(MapApp.orteView.render().el);
+	MapApp.locationsView = new MapApp.Views.Locations({collection: MapApp.locationsCollection});
+	$('#locationsView').append(MapApp.locationsView.render().el);
 	
-	//MapApp.filtersView = new MapApp.Views.Filter({collection: MapApp.orteCollection});
+	//MapApp.filtersView = new MapApp.Views.Filter({collection: MapApp.locationsCollection});
 	//$('#controls').append(MapApp.filtersView.render().el);
 
-	MapApp.addOrtView = new MapApp.Views.AddOrt({collection: MapApp.orteCollection});
-	new MapApp.Views.Map({collection: MapApp.orteCollection});
+	MapApp.createLocationView = new MapApp.Views.CreateLocation({collection: MapApp.locationsCollection});
+	new MapApp.Views.Map({collection: MapApp.locationsCollection});
 
 	MapApp.activateMultiselect();
 
