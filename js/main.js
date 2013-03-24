@@ -94,13 +94,17 @@
 			}
 		});
 
-		$('.multiselect option:first-child').each(function() {
-			item = $(this).val().toString();
-			$(this).parent().multiselect('deselect', item);
-		});
+		MapApp.resetFilters();
 	};//activateMultiselect
 	
 
+	MapApp.resetFilters = function () {
+		$('.multiselect option').each(function() {
+			item = $(this).val().toString();
+			$(this).parent().multiselect('deselect', item);
+		});
+		MapApp.vents.trigger('selectChanged');
+	}
 
 
 
@@ -393,7 +397,7 @@
 			MapApp.queryObject = {};
 			$('select.multiselect').each(function () {
 				filtername = 'filterable.'+$(this).attr('data-name');
-				selected = {$in: $(this).val() };
+				selected = {$all: $(this).val() };
 				if($(this).val() == null) return;
 				MapApp.queryObject[filtername] = selected;
 			});
@@ -406,9 +410,10 @@
 			filteredLocations = MapApp.locationsCollection.query(MapApp.queryObject);
 			console.log('THE RESULT IS: ');
 			console.log(filteredLocations);
+			MapApp.locationsCollection.reset(filteredLocations);
 		},
 		selectChanged :  function (element, filtername, checked) {
-				
+				MapApp.locationsCollection.reset(MapApp.initialLocationsCollection.toJSON())
 				this.updateQueryObject();
 				//query = element.text();
 				//filtername = 'filterable.'+filtername;
@@ -451,12 +456,15 @@
 			MapApp.vents.on('locationAdded', this.showAll, this);
 			this.collection.on('add', this.showAll, this);
 			this.collection.on('remove', this.showAll, this);
+			this.collection.on('reset', this.showAll, this);
 			this.showAll();
 			
 		},
 		showAll: function() {
+			console.log('Showing Markers')
 			this.removeAll();
 			this.collection.each(this.addLocation, this);
+			if(this.collection.length!=0) MapApp.map.fitZoom();
 		},
 		removeAll: function () {
 			MapApp.removeMarkers();
@@ -552,7 +560,7 @@
 			logo: "http://lorempixel.com/g/80/80/nature/",
 			filterable: {
 				City: ['Berlin'],
-				InnovationArea: ['Computing in the Cloud', 'Smart Energy Systems'],
+				InnovationArea: ['Smart Energy Systems'],
 				Services: ['Service1','Service2','Service3','Service4'],
 				LocationType: ['Office']
 			},
@@ -622,10 +630,13 @@
 		},
 		{
 			id: 5,
+			tags: ['jquery', 'html5', 'backbone'],
 			filterable: {}
 		}
 	]);
 
+
+	MapApp.initialLocationsCollection = new MapApp.Collections.Locations(MapApp.locationsCollection.toJSON());
 	
 	
 
