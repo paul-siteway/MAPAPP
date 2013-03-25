@@ -84,6 +84,7 @@
 	};
 
 	MapApp.activateMultiselect = function () {
+		$("select.multiselect").val([]);
 		$('.multiselect').multiselect({
 			buttonClass: 'btn',
 			buttonWidth: 'auto',
@@ -108,15 +109,18 @@
 			}
 		});
 
-		MapApp.resetFilters();
+		//MapApp.resetFilters();
 	};//activateMultiselect
 	
 
 	MapApp.resetFilters = function () {
-		$('.multiselect option').each(function() {
-			item = $(this).val().toString();
-			$(this).parent().multiselect('deselect', item);
-		});
+		// $('.multiselect option').each(function() {
+		// 	item = $(this).val().toString();
+		// 	$(this).parent().multiselect('deselect', item);
+		// });
+		$('#searchTitle').val('');
+		$("select.multiselect").val([]);
+		$("select.multiselect").multiselect('refresh')
 		MapApp.vents.trigger('selectChanged');
 	}
 
@@ -347,16 +351,21 @@
 		className: 'filters',
 		initialize: function () {
 			MapApp.vents.on('selectChanged', this.updateQueryObject, this);
-			//this.collection.on('add', this.update, this);
+			// this.collection.on('add', this.update, this);
 			//this.collection.on('remove', this.update, this);
-			//this.collection.on('reset', this.update, this);
-			this.update();
+			this.collection.on('reset', this.update, this);
+			this.create();
 		},
-		update: function () {
+		create: function () {
 			this.createFilterList();
 			this.createOptionsLists();
 			this.render();
 			MapApp.activateMultiselect();
+		},
+		update: function () {
+			this.createOptionsLists();
+			// this.render();
+			// MapApp.activateMultiselect();
 		},
 		createFilterList: function () {
 			// console.log('creatingFilterList');
