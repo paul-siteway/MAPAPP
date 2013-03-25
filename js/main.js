@@ -27,6 +27,18 @@
 	$('select#ellType').change(function(){
 		MapApp.vents.trigger('filterbyType');	
 	});
+
+	$('#searchTitle').on('keyup', function () {
+		query = $(this).val();
+		console.log(query);
+		filteredLocations = MapApp.initialLocationsCollection.query({title: {$likeI: query}})
+		MapApp.locationsCollection.reset(filteredLocations);
+	})
+
+	$('.reset').on('click', function (e) {
+		e.preventDefault();
+		MapApp.resetFilters();
+	})
 	
 
 	MapApp.filterList = [];
@@ -56,14 +68,16 @@
 		MapApp.map.removeMarkers();
 	};
 
-	//Initialize the Google Map
-	MapApp.map = new GMaps({
-        div: '#map',
-        lat: 53.571148,
-        lng: 10.024898,
-        zoom: 3
-      });
-
+	MapApp.mapInit = function() {
+		//Initialize the Google Map
+		MapApp.map = new GMaps({
+	        div: '#map',
+	        lat: 53.571148,
+	        lng: 10.024898,
+	        zoom: 3
+	      });
+	};
+	MapApp.mapInit();
 
 	MapApp.readProp = function (obj, prop) {
 		return obj[prop];
@@ -332,7 +346,7 @@
 		tagName: 'div', 
 		className: 'filters',
 		initialize: function () {
-			MapApp.vents.on('selectChanged', this.selectChanged, this);
+			MapApp.vents.on('selectChanged', this.updateQueryObject, this);
 			//this.collection.on('add', this.update, this);
 			//this.collection.on('remove', this.update, this);
 			//this.collection.on('reset', this.update, this);
@@ -407,35 +421,10 @@
 			console.log('THE QUERY OBJECT IS: ');
 			console.log(MapApp.queryObject);
 
-			filteredLocations = MapApp.locationsCollection.query(MapApp.queryObject);
+			filteredLocations = MapApp.initialLocationsCollection.query(MapApp.queryObject)
 			console.log('THE RESULT IS: ');
 			console.log(filteredLocations);
 			MapApp.locationsCollection.reset(filteredLocations);
-		},
-		selectChanged :  function (element, filtername, checked) {
-				MapApp.locationsCollection.reset(MapApp.initialLocationsCollection.toJSON())
-				this.updateQueryObject();
-				//query = element.text();
-				//filtername = 'filterable.'+filtername;
-				//console.log('the element is: '+query);
-				//console.log('the element is: '+checked);
-				//console.log('the filtername is: '+filtername);
-				
-
-				//queryObject = { 
-				//'filterable.City' :{$contains: query}, 
-				//'filterable.City' :{$contains: query}, 
-				//'filterable.City' :{$contains: query}, 
-				//'filterable.City' :{$contains: query}, 
-
-				
-			if(checked){
-
-				//filteredCollection = this.collection.query(queryObject);
-				//this.collection.reset(filteredCollection);			
-
-			}
-
 		}
 	});
 
@@ -464,7 +453,11 @@
 			console.log('Showing Markers')
 			this.removeAll();
 			this.collection.each(this.addLocation, this);
-			if(this.collection.length!=0) MapApp.map.fitZoom();
+			if(this.collection.length!=0){
+				MapApp.map.fitZoom();
+			}else{
+				MapApp.mapInit();
+			}
 		},
 		removeAll: function () {
 			MapApp.removeMarkers();
