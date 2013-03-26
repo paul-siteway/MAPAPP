@@ -26,7 +26,7 @@
 	<div class="container">
 	<div id="controls">
 
-	<div class="navbar"><div class="navbar-inner">
+	<div class="navbar navbar-fixed-top"><div class="navbar-inner">
 		<div class="container">
 			<div class="row-fluid">
 				<div class="span1">
@@ -58,7 +58,7 @@
 					<h3><%= title %>  <span class="<%= openLab %>">(Open Lab)</span></h3>
 					<div class="openLabsLogo">
 						<a href="<%= link %>">
-						<img alt="" src="<%= logo %>" width="116" height="75">	
+						<img alt="Lab A" src="<%= logo %>" width="116" height="75">	
 						</a>
 					</div>
 					<div class="openLabData">
@@ -94,6 +94,22 @@
 
 	</div><!-- openLabsListing -->
 
+
+			
+
+
+
+
+	<div id="mapActions">
+		<form id="addLocation" class="form-inline">
+			<input type="text" class="span2 title" placeholder="Title">
+			<input type="text" class="span2 lat" placeholder="Latitude">
+			<input type="text" class="span2 lon" placeholder="Longlitude">  
+			<button type="submit" class="btn">Add Location</button>
+			<a href="#" class="btn" id="showAll"><i class="icon-eye-open"></i>Show All Markers</a>			
+			<a href="#" class="btn" id="removeAll"><i class="icon-eye-close"></i> Remove All Markers</a></div>
+		</form>
+	</div><!-- mapActions -->
 
 	</div><!-- Container -->
 

@@ -59,7 +59,7 @@
 			//alert('You clicked in this marker '+title);
 			},
 			infoWindow: {
-				content: $('#locationsView #location'+id).html()
+				content: $('#openLabsListing #openLabsItem'+id).html()
 			}
 		});
 		return 'marker added';
@@ -176,8 +176,10 @@
 		defaults: {
 			lat: 51.511214,
 			lon: -0.119824,
+			openLab: 'isOpenLab',
+			filterable: {},
 			title: 'im am the default Title',
-			logo: 'http://lorempixel.com/80/80/people/',
+			logo: 'http://lorempixel.com/116/75/people/',
 			link: 'http://www.google.de'
 		},
 		sync: function () { return false; },
@@ -210,7 +212,7 @@
 	 
 	MapApp.Views.Location = Backbone.View.extend({
 		tagName : "div", 
-		className: 'location',
+		className: 'openLabsItem',
 		events: {
 			'click' : 'showLocationInMap',
 			'click strong': 'showAlert',
@@ -225,7 +227,7 @@
 		},
 		render: function(){
 			var id = this.model.get('id');
-			this.$el.html( this.template(this.model.toJSON()) ).attr('id', 'location'+id);
+			this.$el.html( this.template(this.model.toJSON()) ).attr('id', 'openLabsItem'+id);
 			MapApp.vents.trigger('locationAdded');
 			return this;
 		}, 
@@ -271,13 +273,13 @@
 		},
 		renderFiltered : function(locations){
 
-		$("#locationsView").html("");
+		$("#openLabsListing").html("");
 		locations.each(function(location){
 			var view = new MapApp.Views.Location({
 				model: location,
 				collection: this.collection
 			});
-			$("#locationsView").append(view.render().el);
+			$("#openLabsListing").append(view.render().el);
 		});
 		return this;
 		},
@@ -494,32 +496,6 @@
 	});
 
 
-	// ########################################
-	// ##########  ADD LOCATION V I E W  ########## 
-	// ########################################
-	
-
-	MapApp.Views.CreateLocation = Backbone.View.extend({
-		el: '#addLocation',
-		events: {
-			'submit': 'submit'
-		},
-		initialize: function(){
-		}, 
-		submit: function(e){
-			e.preventDefault();
-			var newTitle = $(e.currentTarget).find('input.title').val();
-			var newLat = $(e.currentTarget).find('input.lat').val();
-			var newLon = $(e.currentTarget).find('input.lon').val();
-			// if(! $.trim(newTitle) ) return "title must not be empty!";
-			var location = new MapApp.Models.Locations();
-			location.set({title: newTitle, lat: newLat, lon: newLon});
-			this.collection.add(location);
-			//console.log('newTitle is:'+newTitle+' isValid:'+$.trim(newTitle));
-		}
-	});
-
-
 	// #############################
 	// ########  COLLCTIONS ######## 
 	// #############################
@@ -558,9 +534,10 @@
 		{	
 			id: 0,
 			title: "Experience & Living Lab Berlin",
+			openLab: "isOpenLab",
 			lat: 52.519171,
 			lon: 13.406091, 
-			logo: "http://lorempixel.com/g/80/80/nature/",
+			logo: "http://lorempixel.com/g/116/75/nature/",
 			filterable: {
 				Node: ['Berlin'],
 				Field: ['Smart Energy Systems'],
@@ -572,10 +549,11 @@
 		},
 		{
 			id: 1,
-			title: "Experience & Living Lab Trento", 
+			title: "Experience & Living Lab Trento",
+			openLab: "",
 			lat: 46.069692, 
 			lon: 11.12108,
-			logo: "http://lorempixel.com/g/80/80/sports/",
+			logo: "http://lorempixel.com/g/116/75/sports/",
 			filterable: {
 				Node: ['Trento'],
 				Field: ['Networking Solutions for Future Media'],
@@ -586,10 +564,11 @@
 		},
 		{
 			id: 2,
-			title: "Experience & Living Lab Helsinki", 
+			title: "Experience & Living Lab Helsinki",
+			openLab: "",
 			lat: 60.169845, 
 			lon: 24.938551,
-			logo: "http://lorempixel.com/g/80/80/cats/",
+			logo: "http://lorempixel.com/g/116/75/cats/",
 			filterable: {
 				Node: ['Helsinki'],
 				Field: ['Computing in the Cloud','Smart Spaces'],
@@ -602,9 +581,10 @@
 		{
 			id: 3,
 			title: "Experience & Living Lab Eindhoven", 
+			openLab: "isOpenLab",
 			lat: 51.441642, 
 			lon: 5.469723,
-			logo: "http://lorempixel.com/g/80/80/abstract/",
+			logo: "http://lorempixel.com/g/116/75/abstract/",
 			filterable: {
 				Node: ['Eindhoven'],
 				Field: ['Health & Wellbeing', 'Smart Energy Systems'],
@@ -616,9 +596,10 @@
 		{	
 			id: 4,
 			title: "New Lab Berlin",
+			openLab: "isOpenLab", 
 			lat: 53.519171,
 			lon: 14.406091, 
-			logo: "http://lorempixel.com/g/80/80/nature/",
+			logo: "http://lorempixel.com/g/116/75/nature/",
 			filterable: {
 				Node: ['Berlin', 'Hamburg'],
 				Field: ['Computing in the Cloud', 'Smart Energy Systems','Health & Wellbeing'],
@@ -630,6 +611,7 @@
 		},
 		{
 			id: 5,
+			openLab: "",
 			tags: ['jquery', 'html5', 'backbone'],
 			filterable: {}
 		}
@@ -647,12 +629,11 @@
 	$('#filterLocations').append( MapApp.filtersView.el);
 
 	MapApp.locationsView = new MapApp.Views.Locations({collection: MapApp.locationsCollection});
-	$('#locationsView').append(MapApp.locationsView.render().el);
+	$('#openLabsListing').append(MapApp.locationsView.render().el);
 	
 	//MapApp.filtersView = new MapApp.Views.Filter({collection: MapApp.locationsCollection});
 	//$('#controls').append(MapApp.filtersView.render().el);
 
-	MapApp.createLocationView = new MapApp.Views.CreateLocation({collection: MapApp.locationsCollection});
 	new MapApp.Views.Map({collection: MapApp.locationsCollection});
 
 	MapApp.activateMultiselect();
