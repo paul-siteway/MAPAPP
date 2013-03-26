@@ -1,4 +1,5 @@
-	(function() {
+	
+		(function() {
 	
 	//create a namespace
 
@@ -561,10 +562,10 @@
 			lon: 13.406091, 
 			logo: "http://lorempixel.com/g/80/80/nature/",
 			filterable: {
-				City: ['Berlin'],
-				InnovationArea: ['Smart Energy Systems'],
+				Node: ['Berlin'],
+				Field: ['Smart Energy Systems'],
 				Services: ['Service1','Service2','Service3','Service4'],
-				LocationType: ['Office']
+				Type: ['Office']
 			},
 			link: 'http://www.google.de'
 
@@ -576,10 +577,10 @@
 			lon: 11.12108,
 			logo: "http://lorempixel.com/g/80/80/sports/",
 			filterable: {
-				City: ['Trento'],
-				InnovationArea: ['Networking Solutions for Future Media'],
+				Node: ['Trento'],
+				Field: ['Networking Solutions for Future Media'],
 				Services: ['Service1','Service2','Service3','Service4'],
-				LocationType: ['Office','Hackspace']
+				Type: ['Office','Hackspace']
 			},
 			link: 'http://www.google.de'
 		},
@@ -590,10 +591,10 @@
 			lon: 24.938551,
 			logo: "http://lorempixel.com/g/80/80/cats/",
 			filterable: {
-				City: ['Helsinki'],
-				InnovationArea: ['Computing in the Cloud','Smart Spaces'],
+				Node: ['Helsinki'],
+				Field: ['Computing in the Cloud','Smart Spaces'],
 				Services: ['Service1','Service2','Service3','Service4'],
-				LocationType: ['University']
+				Type: ['University']
 			},
 			link: 'http://www.google.de'
 
@@ -605,10 +606,10 @@
 			lon: 5.469723,
 			logo: "http://lorempixel.com/g/80/80/abstract/",
 			filterable: {
-				City: ['Eindhoven'],
-				InnovationArea: ['Health & Wellbeing', 'Smart Energy Systems'],
+				Node: ['Eindhoven'],
+				Field: ['Health & Wellbeing', 'Smart Energy Systems'],
 				Services: ['Service1','Service2','Service3','Service4'],
-				LocationType: ['Lab']
+				Type: ['Lab']
 			},
 			link: 'http://www.google.de'
 		},
@@ -618,14 +619,11 @@
 			lat: 53.519171,
 			lon: 14.406091, 
 			logo: "http://lorempixel.com/g/80/80/nature/",
-			deep: {
-				title: ['hello']
-			},
 			filterable: {
-				City: ['Berlin', 'Hamburg'],
-				InnovationArea: ['Computing in the Cloud', 'Smart Energy Systems','Health & Wellbeing'],
+				Node: ['Berlin', 'Hamburg'],
+				Field: ['Computing in the Cloud', 'Smart Energy Systems','Health & Wellbeing'],
 				Services: ['Service1','Service2','Service3','All Services'],
-				LocationType: ['Office', 'Lab', 'Other']
+				Type: ['Office', 'Lab', 'Other']
 			},
 			link: 'http://www.google.de'
 
