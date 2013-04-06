@@ -1,6 +1,7 @@
 	
-		(function() {
+$(function() {
 	
+	$('.openLabsList').not('.bb').remove();
 	//create a namespace
 
 	window.MapApp = {
@@ -59,7 +60,7 @@
 			//alert('You clicked in this marker '+title);
 			},
 			infoWindow: {
-				content: $('#openLabsListing #openLabsItem'+id).html()
+				content: '<div class="popupContent">'+ $('#openLabsListing #openLabsItem'+id).html() + '</div>'
 			}
 		});
 		return 'marker added';
@@ -97,7 +98,7 @@
 					return  select.attr('data-name')+'<b class="caret"></b>';
 				}
 				else if (options.length > 0) {
-					return  select.attr('data-name')+' ('+options.length + ') <b class="caret"></b>';
+					return  select.attr('data-name')+' <span>'+options.length + '</span> <b class="caret"></b>';
 				}
 				else {
 					return  select.attr('data-name')+'<b class="caret"></b>';
@@ -529,94 +530,7 @@
 	//########################################
 	//########## CREATE VIEWS AND COLLECTIONS
 	//########################################
-
-	MapApp.locationsCollection = new MapApp.Collections.Locations([
-		{	
-			id: 0,
-			title: "Experience & Living Lab Berlin",
-			openLab: "isOpenLab",
-			lat: 52.519171,
-			lon: 13.406091, 
-			logo: "http://lorempixel.com/g/116/75/nature/",
-			filterable: {
-				Node: ['Berlin'],
-				Field: ['Smart Energy Systems'],
-				Services: ['Service1','Service2','Service3','Service4'],
-				Type: ['Office']
-			},
-			link: 'http://www.google.de'
-
-		},
-		{
-			id: 1,
-			title: "Experience & Living Lab Trento",
-			openLab: "",
-			lat: 46.069692, 
-			lon: 11.12108,
-			logo: "http://lorempixel.com/g/116/75/sports/",
-			filterable: {
-				Node: ['Trento'],
-				Field: ['Networking Solutions for Future Media'],
-				Services: ['Service1','Service2','Service3','Service4'],
-				Type: ['Office','Hackspace']
-			},
-			link: 'http://www.google.de'
-		},
-		{
-			id: 2,
-			title: "Experience & Living Lab Helsinki",
-			openLab: "",
-			lat: 60.169845, 
-			lon: 24.938551,
-			logo: "http://lorempixel.com/g/116/75/cats/",
-			filterable: {
-				Node: ['Helsinki'],
-				Field: ['Computing in the Cloud','Smart Spaces'],
-				Services: ['Service1','Service2','Service3','Service4'],
-				Type: ['University']
-			},
-			link: 'http://www.google.de'
-
-		},
-		{
-			id: 3,
-			title: "Experience & Living Lab Eindhoven", 
-			openLab: "isOpenLab",
-			lat: 51.441642, 
-			lon: 5.469723,
-			logo: "http://lorempixel.com/g/116/75/abstract/",
-			filterable: {
-				Node: ['Eindhoven'],
-				Field: ['Health & Wellbeing', 'Smart Energy Systems'],
-				Services: ['Service1','Service2','Service3','Service4'],
-				Type: ['Lab']
-			},
-			link: 'http://www.google.de'
-		},
-		{	
-			id: 4,
-			title: "New Lab Berlin",
-			openLab: "isOpenLab", 
-			lat: 53.519171,
-			lon: 14.406091, 
-			logo: "http://lorempixel.com/g/116/75/nature/",
-			filterable: {
-				Node: ['Berlin', 'Hamburg'],
-				Field: ['Computing in the Cloud', 'Smart Energy Systems','Health & Wellbeing'],
-				Services: ['Service1','Service2','Service3','All Services'],
-				Type: ['Office', 'Lab', 'Other']
-			},
-			link: 'http://www.google.de'
-
-		},
-		{
-			id: 5,
-			openLab: "",
-			tags: ['jquery', 'html5', 'backbone'],
-			filterable: {}
-		}
-	]);
-
+	MapApp.locationsCollection = new MapApp.Collections.Locations(places);
 
 	MapApp.initialLocationsCollection = new MapApp.Collections.Locations(MapApp.locationsCollection.toJSON());
 	
@@ -626,7 +540,7 @@
 
 	
 	MapApp.filtersView = new MapApp.Views.Filters({collection: MapApp.locationsCollection});
-	$('#filterLocations').append( MapApp.filtersView.el);
+	$('#filterLocations').prepend( MapApp.filtersView.el);
 
 	MapApp.locationsView = new MapApp.Views.Locations({collection: MapApp.locationsCollection});
 	$('#openLabsListing').append(MapApp.locationsView.render().el);
@@ -638,4 +552,4 @@
 
 	MapApp.activateMultiselect();
 
-})();//siaf
+});

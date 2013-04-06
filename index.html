@@ -4,8 +4,6 @@
 	<meta charset="UTF-8">
 	<title>Yeah!</title>
 	<script src='http://maps.google.com/maps/api/js?sensor=true'></script>
-	<script src='js/gmaps.js'></script>
-
 	<link rel="stylesheet" type="text/css" href="http://www.eitictlabs.eu/typo3temp/stylesheet_1e6ec73254.css" media="all">
 	<link rel="stylesheet" type="text/css" href="http://www.eitictlabs.eu/fileadmin/system2013/g/css/normalize.min.css?1355912032" media="all">
 	<link rel="stylesheet" type="text/css" href="http://www.eitictlabs.eu/fileadmin/system2013/g/css/style.css?1363877310" media="all">
@@ -14,48 +12,38 @@
 	<link rel="stylesheet" type="text/css" href="http://www.eitictlabs.eu/fileadmin/system2013/g/css/vacancies.css?1360757796" media="all">
 	<link rel="stylesheet" type="text/css" href="http://www.eitictlabs.eu/fileadmin/system2013/g/css/datepicker.css?1359023049" media="all">
 
-	<link rel="stylesheet" href="css/main.css" media="all">
+	
+	<script  src="js/jquery.js"></script>
+	
+
+	<link rel="stylesheet" href="css/ell-map.css" media="all">
+	<script  src="js/ell-map.min.js"></script>
+
 
 </head>
 <body>
-<div id="mapAPP">
+
 	
 	<div class="tx-openlabs">
 	<div class="openLabsList">
 
-	<div class="container">
-	<div id="controls">
 
-	<div class="navbar"><div class="navbar-inner">
-		<div class="container">
-			<div class="row-fluid">
-				<div class="span1">
-					<label class="filterLabel" for="">Filter:</label>
-				</div>
-				<form id="filterLocations" class="navbar-form span11 form-inline">
-					<script type="text/template" id="filterTemplate">
-						<option value='<%= optionName %>'><%= optionName %></option>
-					</script>
-					<input type="text" id="searchTitle" class="search-query span4" placeholder="search">
-					<button class="btn reset">Reset</button>
-				</form>
-			
-			</div><!-- row -->
-		</div><!-- container -->
-	</div></div><!-- navbar -->
-	
+	<div id="controls">
+		<label class="filterLabel" for="">Filter:</label>
+		<form id="filterLocations" class="navbar-form span11 form-inline">
+			<script type="text/template" id="filterTemplate">
+				<option value='<%= optionName %>'><%= optionName %></option>
+			</script>
+			<button class="btn reset">Reset</button>
+			<input type="text" id="searchTitle" class="search-query span4" placeholder="search">
+		</form>
 	</div> <!-- controls -->
+
 	<div id="map" style="width:100%; height:100%;"></div>
 	
-	
-
-
-	<div id="openLabsListing">
-		
+	<div id="openLabsListing">		
 			<script type="text/template" id="locationTemplate">
-	
-
-					<h3><%= title %>  <span class="<%= openLab %>">(Open Lab)</span></h3>
+					<h3><%= title %><span class="<%= openLab %>">(Open Lab)</span></h3>
 					<div class="openLabsLogo">
 						<a href="<%= link %>">
 						<img alt="" src="<%= logo %>" width="116" height="75">	
@@ -86,34 +74,12 @@
 							<span>more Information</span>
 						</a>
 					</div>
-					<button>Delete</button>
-				
-
-			
-			</script>
-
+			</script> <!-- locationTemplate -->
 	</div><!-- openLabsListing -->
-
-
-	</div><!-- Container -->
-
 
 	</div><!-- openLabsList -->
 	</div><!-- tx-openlabs -->
-	</div> <!-- mapAPP -->
-
-
-
-	<script  src="js/underscore.js"></script>
-	<script  src="js/jquery.js"></script>
-	<script  src="js/backbone.js"></script>
-	<script  src="js/deep-model.min.js"></script>
-	<script  src="js/backbone-validation.js"></script>
-	<script  src="js/backbone-query.min.js"></script>
-	<script  src="js/query-engine.js"></script>	
-	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/bootstrap-multiselect.js"></script>
-	<script  src="js/main.min.js"></script>
+	
 
 </body>
 </html>		
