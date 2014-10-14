@@ -1,9 +1,14 @@
-MAPAPP
+
+
+
+Experience & Living Labs Facilities
 ======
 
 
 
 A single page application for displaying and filtering locations  on a google map.
+
+currently in use on: http://ell.eitictlabs.eu/ell-facilities/
 
 # This project is using: 
 
